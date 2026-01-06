@@ -328,6 +328,25 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.style.overflow = "hidden"
   })
 
+  // Portfolio card buttons - open wizard with pre-selected project
+  document.querySelectorAll(".portfolio-quote-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const projectName = btn.getAttribute("data-project")
+      const wizardPortfolioProject = document.getElementById("wizardPortfolioProject")
+      
+      // Pre-select the project in the select
+      if (wizardPortfolioProject) {
+        wizardPortfolioProject.value = projectName
+      }
+
+      // Reset wizard to step 1
+      currentStep = 1
+      updateWizardSteps()
+      quoteWizardModal.classList.remove("hidden")
+      document.body.style.overflow = "hidden"
+    })
+  })
+
   // Close wizard
   closeWizardBtn.addEventListener("click", () => {
     closeWizard()
@@ -425,6 +444,7 @@ document.addEventListener("DOMContentLoaded", () => {
       phone: formData.get("phone") || "Not provided",
       address: formData.get("address") || "Not provided",
       is_owner: formData.get("is_owner") ? "Yes" : "No",
+      portfolio_project: formData.get("portfolio_project") || "Not provided",
       project_type: formData.get("project_type") || "Not provided",
       property_type: formData.get("property_type") || "Not provided",
       square_feet: formData.get("square_feet") || "Not provided",
@@ -440,6 +460,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <p><strong>Phone:</strong> ${reviewData.phone}</p>
       <p><strong>Address:</strong> ${reviewData.address}</p>
       <p><strong>Property Owner:</strong> ${reviewData.is_owner}</p>
+      <p><strong>Project from Portfolio:</strong> ${reviewData.portfolio_project}</p>
       <p><strong>Project Type:</strong> ${reviewData.project_type}</p>
       <p><strong>Property Type:</strong> ${reviewData.property_type}</p>
       <p><strong>Square Feet:</strong> ${reviewData.square_feet}</p>
@@ -466,6 +487,7 @@ document.addEventListener("DOMContentLoaded", () => {
       message: formData.get("message") || "",
       is_owner: formData.get("is_owner") ? "TRUE" : "FALSE",
       address: formData.get("address"),
+      portfolio_project: formData.get("portfolio_project") || "",
       project_type: formData.get("project_type"),
       property_type: formData.get("property_type"),
       square_feet: formData.get("square_feet") || "",
