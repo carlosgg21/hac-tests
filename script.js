@@ -86,6 +86,33 @@ const translations = {
     footer_quick_links: "Quick Links",
     footer_contact: "Contact Info",
     footer_social: "Follow Us",
+    footer_privacy: "Privacy Policy",
+    privacy_title: "Privacy Policy",
+    privacy_last_updated: "Last Updated: January 1, 2024",
+    privacy_section1_title: "1. Data Controller",
+    privacy_section1_content: "The controller for the processing of your personal data is H.A.C. Renovation Inc., located at 2504 Place Keller, Canada. For any privacy inquiries or to exercise your rights, you can contact us at: hacrenovaccion@gmail.com.",
+    privacy_section2_title: "2. Information We Collect",
+    privacy_section2_content: "Through our contact form, we collect the information you voluntarily provide: full name, email address, phone number, postal address, and the content of your message.",
+    privacy_section3_title: "3. Purpose and Legal Basis for Processing",
+    privacy_section3_content: "We use your personal information to:",
+    privacy_section3_main_purpose: "Main Purpose:",
+    privacy_section3_main_purpose_text: "Contact you in response to your inquiry, follow up on your request, and maintain a record of your contact as a client or potential client of our company.",
+    privacy_section3_legal_basis: "Legal Basis:",
+    privacy_section3_legal_basis_text: "Your explicit consent, granted by checking the corresponding box when submitting the form.",
+    privacy_section4_title: "4. Data Sharing",
+    privacy_section4_content: "H.A.C. Renovation Inc. does not share, transfer, or sell your personal data to any third party for commercial purposes. Your data is used exclusively internally for the purposes described in this policy.",
+    privacy_section5_title: "5. International Transfers",
+    privacy_section5_content: "Your personal data is stored and processed solely on servers located in Canada. We do not carry out systematic international transfers of your information.",
+    privacy_section6_title: "6. Data Retention",
+    privacy_section6_content: "We will retain your personal data for a maximum period of two (2) years from our last communication, unless a contractual relationship is established. In that case, the retention period will be renewed, and your data will be kept for the duration of the business relationship and any additional time required by applicable laws.",
+    privacy_section7_title: "7. Your Rights (Access, Rectification, and Withdrawal)",
+    privacy_section7_content: "In accordance with Canada's Personal Information Protection and Electronic Documents Act (PIPEDA), you have the right to access your data, rectify any inaccuracies, and withdraw your consent at any time.",
+    privacy_section7_instructions: "To exercise any of these rights, you must send a written request to the email address hacrenovaccion@gmail.com, clearly stating whether you wish to access, modify, or delete the information we have stored. We will address your request within a maximum of 30 business days.",
+    privacy_section8_title: "8. Security and Complaints",
+    privacy_section8_content: "We implement appropriate technical and organizational security measures to protect your data. If you believe the processing of your information violates the law, you have the right to file a complaint with the Office of the Privacy Commissioner of Canada (OPC).",
+    privacy_section9_title: "9. Changes to This Policy",
+    privacy_section9_content: "We reserve the right to modify this policy to reflect legal or operational updates. Any changes will be posted on this page with a revised \"Last Updated\" date.",
+    privacy_back_home: "← Back to Home",
   },
   fr: {
     nav_about: "À propos",
@@ -174,6 +201,33 @@ const translations = {
     footer_quick_links: "Liens Rapides",
     footer_contact: "Informations de Contact",
     footer_social: "Suivez-nous",
+    footer_privacy: "Politique de Confidentialité",
+    privacy_title: "Politique de Confidentialité",
+    privacy_last_updated: "Dernière mise à jour : 1 janvier 2024",
+    privacy_section1_title: "1. Responsable du traitement",
+    privacy_section1_content: "Le responsable du traitement de vos données personnelles est H.A.C. Renovation Inc., situé au 2504 Place Keller, Canada. Pour toute question relative à la vie privée ou pour exercer vos droits, vous pouvez nous contacter à l'adresse : hacrenovaccion@gmail.com.",
+    privacy_section2_title: "2. Informations que nous collectons",
+    privacy_section2_content: "Via notre formulaire de contact, nous collectons les informations que vous nous fournissez volontairement : nom et prénom, adresse e-mail, numéro de téléphone, adresse postale et le contenu de votre message.",
+    privacy_section3_title: "3. Finalité et base juridique du traitement",
+    privacy_section3_content: "Nous utilisons vos informations personnelles pour :",
+    privacy_section3_main_purpose: "Finalité principale :",
+    privacy_section3_main_purpose_text: "Vous contacter en réponse à votre demande, assurer un suivi de celle-ci et conserver un registre de votre contact en tant que client ou client potentiel de notre entreprise.",
+    privacy_section3_legal_basis: "Base juridique :",
+    privacy_section3_legal_basis_text: "Votre consentement explicite, accordé en cochant la case correspondante lors de l'envoi du formulaire.",
+    privacy_section4_title: "4. Partage des données",
+    privacy_section4_content: "H.A.C. Renovation Inc. ne partage, ne cède ni ne vend vos données personnelles à aucun tiers à des fins commerciales. Vos données sont utilisées exclusivement en interne pour les finalités décrites dans cette politique.",
+    privacy_section5_title: "5. Transferts internationaux",
+    privacy_section5_content: "Vos données personnelles sont stockées et traitées exclusivement sur des serveurs situés au Canada. Nous n'effectuons pas de transferts internationaux systématiques de vos informations.",
+    privacy_section6_title: "6. Conservation de vos données",
+    privacy_section6_content: "Nous conserverons vos données personnelles pendant un délai maximum de deux (2) ans à partir de notre dernière communication, à moins qu'une relation contractuelle ne soit établie. Dans ce cas, le délai de conservation sera renouvelé et vos données seront conservées pour la durée de la relation commerciale et le temps supplémentaire exigé par les lois applicables.",
+    privacy_section7_title: "7. Vos droits (Accès, Rectification et Retrait)",
+    privacy_section7_content: "Conformément à la Loi sur la protection des renseignements personnels et les documents électroniques (LPIPDE) du Canada, vous avez le droit d'accéder à vos données, de les rectifier si elles sont inexactes et de retirer votre consentement à tout moment.",
+    privacy_section7_instructions: "Pour exercer l'un de ces droits, vous devez envoyer une demande écrite à l'adresse e-mail hacrenovaccion@gmail.com, en indiquant clairement si vous souhaitez accéder, modifier ou supprimer les informations que nous avons stockées. Nous traiterons votre demande dans un délai maximum de 30 jours ouvrables.",
+    privacy_section8_title: "8. Sécurité et Plaintes",
+    privacy_section8_content: "Nous mettons en œuvre des mesures de sécurité techniques et organisationnelles appropriées pour protéger vos données. Si vous estimez que le traitement de vos informations enfreint la loi, vous avez le droit de déposer une plainte auprès du Commissariat à la protection de la vie privée du Canada (CPVP).",
+    privacy_section9_title: "9. Modifications de cette politique",
+    privacy_section9_content: "Nous nous réservons le droit de modifier cette politique pour refléter des mises à jour légales ou opérationnelles. Toute modification sera publiée sur cette page avec une date de \"Dernière mise à jour\" révisée.",
+    privacy_back_home: "← Retour à l'accueil",
   },
 }
 
@@ -323,9 +377,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Reset wizard to step 1
     currentStep = 1
-    updateWizardSteps()
     quoteWizardModal.classList.remove("hidden")
     document.body.style.overflow = "hidden"
+    // Update steps after modal is visible
+    setTimeout(() => {
+      updateWizardSteps()
+    }, 100)
   })
 
   // Portfolio card buttons - open wizard with pre-selected project
@@ -341,11 +398,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Reset wizard to step 1
       currentStep = 1
-      updateWizardSteps()
       quoteWizardModal.classList.remove("hidden")
       document.body.style.overflow = "hidden"
+      // Update steps after modal is visible
+      setTimeout(() => {
+        updateWizardSteps()
+      }, 100)
     })
   })
+
+  // Listen for changes in project type selects to toggle steps
+  const wizardPortfolioProject = document.getElementById("wizardPortfolioProject")
+  const wizardProjectType = document.getElementById("wizardProjectType")
+  
+  if (wizardPortfolioProject) {
+    wizardPortfolioProject.addEventListener("change", () => {
+      updateWizardSteps()
+    })
+  }
+  
+  if (wizardProjectType) {
+    wizardProjectType.addEventListener("change", () => {
+      updateWizardSteps()
+    })
+  }
 
   // Close wizard
   closeWizardBtn.addEventListener("click", () => {
@@ -367,6 +443,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Update wizard step indicators
   function updateWizardSteps() {
+    const isBathroom = isBathroomProject()
+    
+    // Show/hide step groups based on project type
+    const defaultSteps = document.querySelectorAll(".wizard-step-default")
+    const bathroomSteps = document.querySelectorAll(".wizard-step-bathroom")
+
+    if (isBathroom) {
+      defaultSteps.forEach(step => step.classList.add("hidden"))
+      bathroomSteps.forEach(step => step.classList.remove("hidden"))
+    } else {
+      defaultSteps.forEach(step => step.classList.remove("hidden"))
+      bathroomSteps.forEach(step => step.classList.add("hidden"))
+    }
+
     // Update step indicators
     document.querySelectorAll(".wizard-step").forEach((step, index) => {
       const stepNum = index + 1
@@ -378,12 +468,37 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     })
 
-    // Update step content visibility
-    document.querySelectorAll(".wizard-step-content").forEach((content, index) => {
-      const stepNum = index + 1
+    // Update step content visibility - only show active step for current project type
+    document.querySelectorAll(".wizard-step-content").forEach((content) => {
+      const stepNum = parseInt(content.getAttribute("data-step"))
+      const isDefault = content.classList.contains("wizard-step-default")
+      const isBathroomStep = content.classList.contains("wizard-step-bathroom")
+      const isStep1 = stepNum === 1
+      
+      // Remove active from all
       content.classList.remove("active")
-      if (stepNum === currentStep) {
-        content.classList.add("active")
+      
+      // Step 1 is always visible (common for all project types)
+      if (isStep1) {
+        if (stepNum === currentStep) {
+          content.classList.add("active")
+          content.classList.remove("hidden")
+        } else {
+          content.classList.add("hidden")
+        }
+      } else {
+        // Show only the active step that matches the project type
+        if (stepNum === currentStep) {
+          if ((isBathroom && isBathroomStep) || (!isBathroom && isDefault)) {
+            content.classList.add("active")
+            content.classList.remove("hidden")
+          } else {
+            content.classList.add("hidden")
+          }
+        } else {
+          // Hide all other steps
+          content.classList.add("hidden")
+        }
       }
     })
 
@@ -414,12 +529,46 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Validate current step
   function validateCurrentStep() {
-    const currentStepContent = document.querySelector(`.wizard-step-content[data-step="${currentStep}"]`)
+    const currentStepContent = document.querySelector(`.wizard-step-content[data-step="${currentStep}"].active`)
+    if (!currentStepContent) return false
+    
     const requiredFields = currentStepContent.querySelectorAll("input[required], select[required]")
     let isValid = true
 
+    // Special validation for Step 1 - privacy policy checkbox
+    if (currentStep === 1) {
+      const privacyCheckbox = document.getElementById("wizardPrivacyPolicy")
+      if (privacyCheckbox && !privacyCheckbox.checked) {
+        isValid = false
+        privacyCheckbox.classList.add("border-red-500", "ring-2", "ring-red-500")
+        setTimeout(() => {
+          privacyCheckbox.classList.remove("border-red-500", "ring-2", "ring-red-500")
+        }, 3000)
+      }
+    }
+
     requiredFields.forEach((field) => {
-      if (!field.value.trim()) {
+      if (field.type === "checkbox") {
+        if (!field.checked && field.required) {
+          isValid = false
+          field.classList.add("border-red-500", "ring-2", "ring-red-500")
+          setTimeout(() => {
+            field.classList.remove("border-red-500", "ring-2", "ring-red-500")
+          }, 3000)
+        }
+      } else if (field.type === "radio") {
+        const radioGroup = currentStepContent.querySelectorAll(`input[name="${field.name}"][required]`)
+        const isRadioChecked = Array.from(radioGroup).some(radio => radio.checked)
+        if (!isRadioChecked) {
+          isValid = false
+          radioGroup.forEach(radio => {
+            radio.closest("label")?.classList.add("border-red-500")
+            setTimeout(() => {
+              radio.closest("label")?.classList.remove("border-red-500")
+            }, 3000)
+          })
+        }
+      } else if (!field.value.trim()) {
         isValid = false
         field.classList.add("border-red-500")
         setTimeout(() => {
@@ -433,42 +582,142 @@ document.addEventListener("DOMContentLoaded", () => {
     return isValid
   }
 
-  // Update review section
-  function updateReview() {
-    const reviewDiv = document.getElementById("wizardReview")
-    const formData = new FormData(quoteWizardForm)
-    
-    const reviewData = {
-      name: formData.get("name") || "Not provided",
-      email: formData.get("email") || "Not provided",
-      phone: formData.get("phone") || "Not provided",
-      address: formData.get("address") || "Not provided",
-      is_owner: formData.get("is_owner") ? "Yes" : "No",
-      portfolio_project: formData.get("portfolio_project") || "Not provided",
-      project_type: formData.get("project_type") || "Not provided",
-      property_type: formData.get("property_type") || "Not provided",
-      square_feet: formData.get("square_feet") || "Not provided",
-      budget: formData.get("budget") || "Not provided",
-      timeline: formData.get("timeline") || "Not provided",
-      preferred_contact: formData.get("preferred_contact") || "Not provided",
-      message: formData.get("message") || "None"
+  // Check if current project is Bathroom Remodel
+  function isBathroomProject() {
+    const portfolioProject = document.getElementById("wizardPortfolioProject")?.value
+    const projectType = document.getElementById("wizardProjectType")?.value
+    return portfolioProject === "Bathroom Remodel" || projectType === "Bathroom"
+  }
+
+
+  // Calculate bathroom category based on answers
+  function calculateBathroomCategory() {
+    const answers = {
+      goal: document.querySelector('input[name="bathroom_goal"]:checked')?.getAttribute("data-category"),
+      layout: document.querySelector('input[name="bathroom_layout"]:checked')?.getAttribute("data-category"),
+      shower_tub: document.querySelector('input[name="bathroom_shower_tub"]:checked')?.getAttribute("data-category"),
+      finishes: document.querySelector('input[name="bathroom_finishes"]:checked')?.getAttribute("data-category"),
+      vanity: document.querySelector('input[name="bathroom_vanity"]:checked')?.getAttribute("data-category"),
+      durability: document.querySelector('input[name="bathroom_durability"]:checked')?.getAttribute("data-category"),
+      budget: document.querySelector('input[name="bathroom_budget"]:checked')?.getAttribute("data-category")
     }
 
-    reviewDiv.innerHTML = `
-      <p><strong>Name:</strong> ${reviewData.name}</p>
-      <p><strong>Email:</strong> ${reviewData.email}</p>
-      <p><strong>Phone:</strong> ${reviewData.phone}</p>
-      <p><strong>Address:</strong> ${reviewData.address}</p>
-      <p><strong>Property Owner:</strong> ${reviewData.is_owner}</p>
-      <p><strong>Project from Portfolio:</strong> ${reviewData.portfolio_project}</p>
-      <p><strong>Project Type:</strong> ${reviewData.project_type}</p>
-      <p><strong>Property Type:</strong> ${reviewData.property_type}</p>
-      <p><strong>Square Feet:</strong> ${reviewData.square_feet}</p>
-      <p><strong>Budget:</strong> ${reviewData.budget}</p>
-      <p><strong>Timeline:</strong> ${reviewData.timeline}</p>
-      <p><strong>Preferred Contact:</strong> ${reviewData.preferred_contact}</p>
-      ${reviewData.message !== "None" ? `<p><strong>Notes:</strong> ${reviewData.message}</p>` : ""}
-    `
+    // Count upgrades
+    const upgrades = document.querySelectorAll('input[name="bathroom_upgrades"]:checked')
+    let upgradesCategory = "basic"
+    if (upgrades.length === 0) {
+      upgradesCategory = "basic"
+    } else if (upgrades.length <= 2) {
+      upgradesCategory = "mid-range"
+    } else {
+      upgradesCategory = "high-end"
+    }
+
+    // Map categories to points
+    const categoryPoints = { "basic": 1, "mid-range": 2, "high-end": 3 }
+    let totalPoints = 0
+    let count = 0
+
+    Object.values(answers).forEach(category => {
+      if (category) {
+        totalPoints += categoryPoints[category] || 0
+        count++
+      }
+    })
+
+    // Add upgrades points
+    totalPoints += categoryPoints[upgradesCategory] || 0
+    count++
+
+    if (count === 0) return "Basic"
+
+    const average = totalPoints / count
+
+    if (average < 1.5) return "Basic"
+    if (average <= 2.5) return "Mid-Range"
+    return "High-End"
+  }
+
+  // Update review section
+  function updateReview() {
+    const isBathroom = isBathroomProject()
+    const formData = new FormData(quoteWizardForm)
+    
+    if (isBathroom) {
+      const reviewDiv = document.getElementById("wizardReviewBathroom")
+      const categoryDiv = document.getElementById("bathroomCategoryValue")
+      const category = calculateBathroomCategory()
+      
+      const bathroomAnswers = {
+        goal: document.querySelector('input[name="bathroom_goal"]:checked')?.closest("label")?.textContent.trim() || "Not answered",
+        layout: document.querySelector('input[name="bathroom_layout"]:checked')?.closest("label")?.textContent.trim() || "Not answered",
+        shower_tub: document.querySelector('input[name="bathroom_shower_tub"]:checked')?.closest("label")?.textContent.trim() || "Not answered",
+        finishes: document.querySelector('input[name="bathroom_finishes"]:checked')?.closest("label")?.textContent.trim() || "Not answered",
+        vanity: document.querySelector('input[name="bathroom_vanity"]:checked')?.closest("label")?.textContent.trim() || "Not answered",
+        durability: document.querySelector('input[name="bathroom_durability"]:checked')?.closest("label")?.textContent.trim() || "Not answered",
+        budget: document.querySelector('input[name="bathroom_budget"]:checked')?.closest("label")?.textContent.trim() || "Not answered"
+      }
+
+      const upgrades = Array.from(document.querySelectorAll('input[name="bathroom_upgrades"]:checked'))
+        .map(checkbox => checkbox.closest("label")?.textContent.trim())
+        .filter(Boolean)
+
+      reviewDiv.innerHTML = `
+        <p><strong>Name:</strong> ${formData.get("name") || "Not provided"}</p>
+        <p><strong>Email:</strong> ${formData.get("email") || "Not provided"}</p>
+        <p><strong>Phone:</strong> ${formData.get("phone") || "Not provided"}</p>
+        <p><strong>Address:</strong> ${formData.get("address") || "Not provided"}</p>
+        <p><strong>Property Owner:</strong> ${formData.get("is_owner") ? "Yes" : "No"}</p>
+        <hr class="my-2">
+        <p><strong>1. Main Goal:</strong> ${bathroomAnswers.goal}</p>
+        <p><strong>2. Layout:</strong> ${bathroomAnswers.layout}</p>
+        <p><strong>3. Shower/Tub:</strong> ${bathroomAnswers.shower_tub}</p>
+        <p><strong>4. Finishes:</strong> ${bathroomAnswers.finishes}</p>
+        <p><strong>5. Vanity:</strong> ${bathroomAnswers.vanity}</p>
+        <p><strong>6. Upgrades:</strong> ${upgrades.length > 0 ? upgrades.join(", ") : "None"}</p>
+        <p><strong>7. Durability:</strong> ${bathroomAnswers.durability}</p>
+        <p><strong>8. Budget:</strong> ${bathroomAnswers.budget}</p>
+        ${formData.get("message") ? `<p><strong>Notes:</strong> ${formData.get("message")}</p>` : ""}
+      `
+      
+      if (categoryDiv) {
+        categoryDiv.textContent = category
+      }
+    } else {
+      const reviewDiv = document.getElementById("wizardReview")
+      
+      const reviewData = {
+        name: formData.get("name") || "Not provided",
+        email: formData.get("email") || "Not provided",
+        phone: formData.get("phone") || "Not provided",
+        address: formData.get("address") || "Not provided",
+        is_owner: formData.get("is_owner") ? "Yes" : "No",
+        portfolio_project: formData.get("portfolio_project") || "Not provided",
+        project_type: formData.get("project_type") || "Not provided",
+        property_type: formData.get("property_type") || "Not provided",
+        square_feet: formData.get("square_feet") || "Not provided",
+        budget: formData.get("budget") || "Not provided",
+        timeline: formData.get("timeline") || "Not provided",
+        preferred_contact: formData.get("preferred_contact") || "Not provided",
+        message: formData.get("message") || "None"
+      }
+
+      reviewDiv.innerHTML = `
+        <p><strong>Name:</strong> ${reviewData.name}</p>
+        <p><strong>Email:</strong> ${reviewData.email}</p>
+        <p><strong>Phone:</strong> ${reviewData.phone}</p>
+        <p><strong>Address:</strong> ${reviewData.address}</p>
+        <p><strong>Property Owner:</strong> ${reviewData.is_owner}</p>
+        <p><strong>Project from Portfolio:</strong> ${reviewData.portfolio_project}</p>
+        <p><strong>Project Type:</strong> ${reviewData.project_type}</p>
+        <p><strong>Property Type:</strong> ${reviewData.property_type}</p>
+        <p><strong>Square Feet:</strong> ${reviewData.square_feet}</p>
+        <p><strong>Budget:</strong> ${reviewData.budget}</p>
+        <p><strong>Timeline:</strong> ${reviewData.timeline}</p>
+        <p><strong>Preferred Contact:</strong> ${reviewData.preferred_contact}</p>
+        ${reviewData.message !== "None" ? `<p><strong>Notes:</strong> ${reviewData.message}</p>` : ""}
+      `
+    }
   }
 
   // Submit form to Google Sheets
@@ -480,6 +729,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const formData = new FormData(quoteWizardForm)
+    const isBathroom = isBathroomProject()
+    
     const data = {
       name: formData.get("name"),
       email: formData.get("email"),
@@ -488,14 +739,32 @@ document.addEventListener("DOMContentLoaded", () => {
       is_owner: formData.get("is_owner") ? "TRUE" : "FALSE",
       address: formData.get("address"),
       portfolio_project: formData.get("portfolio_project") || "",
-      project_type: formData.get("project_type"),
-      property_type: formData.get("property_type"),
-      square_feet: formData.get("square_feet") || "",
-      budget: formData.get("budget"),
-      timeline: formData.get("timeline"),
-      preferred_contact: formData.get("preferred_contact"),
+      privacy_policy: formData.get("privacy_policy") ? "TRUE" : "FALSE",
       created_at: new Date().toISOString(),
       status: "new"
+    }
+
+    // Add bathroom-specific data or default project data
+    if (isBathroom) {
+      data.project_type = "Bathroom Remodel"
+      data.bathroom_category = calculateBathroomCategory()
+      data.bathroom_goal = document.querySelector('input[name="bathroom_goal"]:checked')?.value || ""
+      data.bathroom_layout = document.querySelector('input[name="bathroom_layout"]:checked')?.value || ""
+      data.bathroom_shower_tub = document.querySelector('input[name="bathroom_shower_tub"]:checked')?.value || ""
+      data.bathroom_finishes = document.querySelector('input[name="bathroom_finishes"]:checked')?.value || ""
+      data.bathroom_vanity = document.querySelector('input[name="bathroom_vanity"]:checked')?.value || ""
+      data.bathroom_durability = document.querySelector('input[name="bathroom_durability"]:checked')?.value || ""
+      data.bathroom_budget = document.querySelector('input[name="bathroom_budget"]:checked')?.value || ""
+      data.bathroom_upgrades = Array.from(document.querySelectorAll('input[name="bathroom_upgrades"]:checked'))
+        .map(cb => cb.value)
+        .join(", ")
+    } else {
+      data.project_type = formData.get("project_type") || ""
+      data.property_type = formData.get("property_type") || ""
+      data.square_feet = formData.get("square_feet") || ""
+      data.budget = formData.get("budget") || ""
+      data.timeline = formData.get("timeline") || ""
+      data.preferred_contact = formData.get("preferred_contact") || ""
     }
 
     // Disable submit button

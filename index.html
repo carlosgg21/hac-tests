@@ -556,6 +556,7 @@
                         <li><a href="#services" class="text-gray-300 hover:text-accent transition-colors" data-translate="nav_services">Services</a></li>
                         <li><a href="#portfolio" class="text-gray-300 hover:text-accent transition-colors" data-translate="nav_portfolio">Portfolio</a></li>
                         <li><a href="#contact" class="text-gray-300 hover:text-accent transition-colors" data-translate="nav_contact">Contact</a></li>
+                        <li><a href="privacy-policy.html" class="text-gray-300 hover:text-accent transition-colors" data-translate="footer_privacy">Privacy Policy</a></li>
                     </ul>
                 </div>
 
@@ -611,7 +612,7 @@
             </div>
 
             <div class="border-t border-white/20 pt-8 text-center text-gray-300 text-sm">
-                <p>&copy; 2026 H.A.C. Renovation Inc. All rights reserved.</p>
+                <p>&copy; 2026 H.A.C. Renovation Inc. All rights reserved. | <a href="privacy-policy.html" class="hover:text-accent transition-colors" data-translate="footer_privacy">Privacy Policy</a></p>
             </div>
         </div>
     </footer>
@@ -700,11 +701,18 @@
                                 <option value="Patio Construction">Patio Construction</option>
                             </select>
                         </div>
+                        <div class="flex items-start">
+                            <input type="checkbox" id="wizardPrivacyPolicy" name="privacy_policy" required
+                                   class="w-4 h-4 text-accent border-gray-300 rounded focus:ring-accent mt-1">
+                            <label for="wizardPrivacyPolicy" class="ml-2 text-sm text-gray-700">
+                                I accept the <a href="#" class="text-accent hover:underline">Privacy Policy</a> and agree to the processing of my personal data *
+                            </label>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Step 2: Project Details -->
-                <div class="wizard-step-content" data-step="2">
+                <!-- Step 2: Project Details (Default) -->
+                <div class="wizard-step-content wizard-step-default" data-step="2">
                     <h3 class="text-xl font-bold text-primary mb-6" data-translate="wizard_step2_title">Project Details</h3>
                     <div class="space-y-4">
                         <div>
@@ -738,8 +746,8 @@
                     </div>
                 </div>
 
-                <!-- Step 3: Budget & Time -->
-                <div class="wizard-step-content" data-step="3">
+                <!-- Step 3: Budget & Time (Default) -->
+                <div class="wizard-step-content wizard-step-default" data-step="3">
                     <h3 class="text-xl font-bold text-primary mb-6" data-translate="wizard_step3_title">Budget & Timeline</h3>
                     <div class="space-y-4">
                         <div>
@@ -779,8 +787,8 @@
                     </div>
                 </div>
 
-                <!-- Step 4: Review & Submit -->
-                <div class="wizard-step-content" data-step="4">
+                <!-- Step 4: Review & Submit (Default) -->
+                <div class="wizard-step-content wizard-step-default" data-step="4">
                     <h3 class="text-xl font-bold text-primary mb-6" data-translate="wizard_step4_title">Review & Submit</h3>
                     <div class="space-y-4">
                         <div>
@@ -792,6 +800,197 @@
                         <div class="bg-gray-50 rounded-lg p-4 space-y-2">
                             <h4 class="font-semibold text-gray-900 mb-3" data-translate="wizard_review_title">Review Your Information:</h4>
                             <div id="wizardReview" class="text-sm text-gray-700 space-y-1"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Bathroom Discovery - Part 1 -->
+                <div class="wizard-step-content wizard-step-bathroom hidden" data-step="2">
+                    <h3 class="text-xl font-bold text-primary mb-6">Bathroom Project Discovery</h3>
+                    <div class="space-y-6">
+                        <!-- Question 1: Main Goal -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">1. What is your main goal for this bathroom? *</label>
+                            <div class="space-y-2">
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="bathroom_goal" value="basic" required class="mt-1 mr-3" data-category="basic">
+                                    <span>Refresh and modernize it, keeping things simple and functional</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="bathroom_goal" value="mid-range" required class="mt-1 mr-3" data-category="mid-range">
+                                    <span>Upgrade it for comfort, durability, and a modern look</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="bathroom_goal" value="high-end" required class="mt-1 mr-3" data-category="high-end">
+                                    <span>Create a spa-like bathroom with premium finishes</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Question 2: Layout -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">2. Are you planning to keep the existing layout? *</label>
+                            <div class="space-y-2">
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="bathroom_layout" value="basic" required class="mt-1 mr-3" data-category="basic">
+                                    <span>Yes, no plumbing changes</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="bathroom_layout" value="mid-range" required class="mt-1 mr-3" data-category="mid-range">
+                                    <span>Possibly small changes (vanity or shower location)</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="bathroom_layout" value="high-end" required class="mt-1 mr-3" data-category="high-end">
+                                    <span>No, I want a full redesign</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Question 3: Shower/Tub -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">3. What type of shower or tub are you envisioning? *</label>
+                            <div class="space-y-2">
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="bathroom_shower_tub" value="basic" required class="mt-1 mr-3" data-category="basic">
+                                    <span>Existing tub or acrylic shower base</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="bathroom_shower_tub" value="mid-range" required class="mt-1 mr-3" data-category="mid-range">
+                                    <span>Tiled shower with glass enclosure</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="bathroom_shower_tub" value="high-end" required class="mt-1 mr-3" data-category="high-end">
+                                    <span>Custom walk-in shower and/or freestanding tub</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Bathroom Discovery - Part 2 -->
+                <div class="wizard-step-content wizard-step-bathroom hidden" data-step="3">
+                    <h3 class="text-xl font-bold text-primary mb-6">Bathroom Project Discovery (Continued)</h3>
+                    <div class="space-y-6">
+                        <!-- Question 4: Finishes -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">4. What level of finishes do you prefer? *</label>
+                            <div class="space-y-2">
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="bathroom_finishes" value="basic" required class="mt-1 mr-3" data-category="basic">
+                                    <span>Simple, durable, and cost-effective</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="bathroom_finishes" value="mid-range" required class="mt-1 mr-3" data-category="mid-range">
+                                    <span>Modern and stylish with upgraded materials</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="bathroom_finishes" value="high-end" required class="mt-1 mr-3" data-category="high-end">
+                                    <span>High-end, luxury, and design-focused</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Question 5: Vanity -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">5. What type of vanity are you interested in? *</label>
+                            <div class="space-y-2">
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="bathroom_vanity" value="basic" required class="mt-1 mr-3" data-category="basic">
+                                    <span>Standard vanity with laminate top</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="bathroom_vanity" value="mid-range" required class="mt-1 mr-3" data-category="mid-range">
+                                    <span>Semi-custom vanity with quartz countertop</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="bathroom_vanity" value="high-end" required class="mt-1 mr-3" data-category="high-end">
+                                    <span>Custom vanity with stone or designer finishes</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Question 6: Upgrades (Multiple selection) -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">6. Are upgrades like these important to you? (Select all that apply)</label>
+                            <div class="space-y-2">
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="checkbox" name="bathroom_upgrades" value="heated_floors" class="mt-1 mr-3">
+                                    <span>Heated floors</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="checkbox" name="bathroom_upgrades" value="shower_niches" class="mt-1 mr-3">
+                                    <span>Shower niches or built-in storage</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="checkbox" name="bathroom_upgrades" value="rain_shower" class="mt-1 mr-3">
+                                    <span>Rain shower or upgraded fixtures</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="checkbox" name="bathroom_upgrades" value="smart_features" class="mt-1 mr-3">
+                                    <span>Smart mirrors / lighting / steam shower</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Bathroom Discovery - Part 3 + Review -->
+                <div class="wizard-step-content wizard-step-bathroom hidden" data-step="4">
+                    <h3 class="text-xl font-bold text-primary mb-6">Bathroom Project Discovery (Final)</h3>
+                    <div class="space-y-6">
+                        <!-- Question 7: Durability -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">7. How important is long-term durability and waterproofing? *</label>
+                            <div class="space-y-2">
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="bathroom_durability" value="basic" required class="mt-1 mr-3" data-category="basic">
+                                    <span>Standard installation is fine</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="bathroom_durability" value="mid-range" required class="mt-1 mr-3" data-category="mid-range">
+                                    <span>I want proper waterproofing systems</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="bathroom_durability" value="high-end" required class="mt-1 mr-3" data-category="high-end">
+                                    <span>I want top-tier systems and materials</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Question 8: Budget -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">8. Which budget range best aligns with your expectations? *</label>
+                            <div class="space-y-2">
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="bathroom_budget" value="basic" required class="mt-1 mr-3" data-category="basic">
+                                    <span>$10,000 – $18,000</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="bathroom_budget" value="mid-range" required class="mt-1 mr-3" data-category="mid-range">
+                                    <span>$18,000 – $30,000</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="bathroom_budget" value="high-end" required class="mt-1 mr-3" data-category="high-end">
+                                    <span>$30,000 – $60,000+</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Additional Notes -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2" data-translate="form_message">Additional Notes (Optional)</label>
+                            <textarea id="wizardMessageBathroom" name="message" rows="4"
+                                      class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-accent focus:border-accent transition-colors"
+                                      placeholder="Any additional information about your project..."></textarea>
+                        </div>
+
+                        <!-- Review Section -->
+                        <div class="bg-gray-50 rounded-lg p-4 space-y-2">
+                            <h4 class="font-semibold text-gray-900 mb-3" data-translate="wizard_review_title">Review Your Information:</h4>
+                            <div id="wizardReviewBathroom" class="text-sm text-gray-700 space-y-1"></div>
+                            <div id="bathroomCategoryResult" class="mt-4 p-3 bg-primary/10 rounded-md border border-primary/20">
+                                <p class="font-semibold text-primary">Recommended Category: <span id="bathroomCategoryValue" class="text-accent"></span></p>
+                            </div>
                         </div>
                     </div>
                 </div>
