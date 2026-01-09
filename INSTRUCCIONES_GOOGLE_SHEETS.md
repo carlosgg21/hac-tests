@@ -19,6 +19,27 @@
    - budget
    - timeline
    - preferred_contact
+   - portfolio_project
+   - privacy_policy
+   - bathroom_category
+   - bathroom_goal
+   - bathroom_layout
+   - bathroom_shower_tub
+   - bathroom_finishes
+   - bathroom_vanity
+   - bathroom_durability
+   - bathroom_budget
+   - bathroom_upgrades
+   - kitchen_category
+   - kitchen_goal
+   - kitchen_layout
+   - kitchen_cabinetry
+   - kitchen_finishes
+   - kitchen_countertop
+   - kitchen_upgrades
+   - kitchen_appliances
+   - kitchen_durability
+   - kitchen_budget
    - created_at
    - status
 

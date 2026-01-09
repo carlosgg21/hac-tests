@@ -28,7 +28,12 @@
  * 
  * 11. Asegúrate de que las columnas en tu Google Sheet estén en este orden:
  *     name, email, phone, message, is_owner, address, project_type, property_type, 
- *     square_feet, budget, timeline, preferred_contact, created_at, status
+ *     square_feet, budget, timeline, preferred_contact, portfolio_project, privacy_policy,
+ *     bathroom_category, bathroom_goal, bathroom_layout, bathroom_shower_tub, bathroom_finishes,
+ *     bathroom_vanity, bathroom_durability, bathroom_budget, bathroom_upgrades,
+ *     kitchen_category, kitchen_goal, kitchen_layout, kitchen_cabinetry, kitchen_finishes,
+ *     kitchen_countertop, kitchen_upgrades, kitchen_appliances, kitchen_durability, kitchen_budget,
+ *     created_at, status
  */
 
 function doPost(e) {
@@ -54,7 +59,12 @@ function doPost(e) {
       const headers = [
         'name', 'email', 'phone', 'message', 'is_owner', 'address', 
         'project_type', 'property_type', 'square_feet', 'budget', 
-        'timeline', 'preferred_contact', 'created_at', 'status'
+        'timeline', 'preferred_contact', 'portfolio_project', 'privacy_policy',
+        'bathroom_category', 'bathroom_goal', 'bathroom_layout', 'bathroom_shower_tub', 
+        'bathroom_finishes', 'bathroom_vanity', 'bathroom_durability', 'bathroom_budget', 
+        'bathroom_upgrades', 'kitchen_category', 'kitchen_goal', 'kitchen_layout', 
+        'kitchen_cabinetry', 'kitchen_finishes', 'kitchen_countertop', 'kitchen_upgrades',
+        'kitchen_appliances', 'kitchen_durability', 'kitchen_budget', 'created_at', 'status'
       ];
       sheet.appendRow(headers);
     }
@@ -62,30 +72,52 @@ function doPost(e) {
     // Parse data - handle both JSON and URL-encoded formats
     let data = {};
     
-    if (e.postData && e.postData.contents) {
-      // Try to parse as JSON first
-      try {
-        data = JSON.parse(e.postData.contents);
-      } catch (jsonError) {
-        // If JSON parsing fails, try URL-encoded format
-        const params = e.parameter;
-        if (params && Object.keys(params).length > 0) {
-          data = params;
-        } else {
-          // Parse URL-encoded string manually
+    // First, try to get data from e.parameter (URL-encoded form data from POST)
+    // Google Apps Script automatically parses URL-encoded data into e.parameter
+    if (e.parameter && Object.keys(e.parameter).length > 0) {
+      data = e.parameter;
+      Logger.log('Using e.parameter (URL-encoded data)');
+    } else if (e.postData && e.postData.contents) {
+      // Check content type to determine how to parse
+      const contentType = e.postData.type || '';
+      
+      if (contentType.includes('application/json')) {
+        // Try to parse as JSON
+        try {
+          data = JSON.parse(e.postData.contents);
+          Logger.log('Parsed as JSON');
+        } catch (jsonError) {
+          Logger.log('JSON parse error: ' + jsonError.toString());
+          // If JSON parsing fails, try URL-encoded
           const urlParams = e.postData.contents.split('&');
           urlParams.forEach(param => {
-            const [key, value] = param.split('=');
-            if (key && value) {
-              data[decodeURIComponent(key)] = decodeURIComponent(value);
+            const parts = param.split('=');
+            if (parts.length >= 2) {
+              const key = decodeURIComponent(parts[0]);
+              const value = decodeURIComponent(parts.slice(1).join('=')); // Handle values with = in them
+              data[key] = value;
             }
           });
+          Logger.log('Parsed as URL-encoded after JSON failed');
         }
+      } else {
+        // Assume URL-encoded format
+        const urlParams = e.postData.contents.split('&');
+        urlParams.forEach(param => {
+          const parts = param.split('=');
+          if (parts.length >= 2) {
+            const key = decodeURIComponent(parts[0]);
+            const value = decodeURIComponent(parts.slice(1).join('=')); // Handle values with = in them
+            data[key] = value;
+          }
+        });
+        Logger.log('Parsed as URL-encoded (default)');
       }
-    } else if (e.parameter) {
-      // Direct parameter access (URL-encoded)
-      data = e.parameter;
     }
+    
+    // Log received data for debugging
+    Logger.log('Received data keys: ' + Object.keys(data).join(', '));
+    Logger.log('Sample data: name=' + (data.name || 'N/A') + ', email=' + (data.email || 'N/A'));
     
     // Prepare the row data in the correct order
     const rowData = [
@@ -101,6 +133,27 @@ function doPost(e) {
       data.budget || '',
       data.timeline || '',
       data.preferred_contact || '',
+      data.portfolio_project || '',
+      data.privacy_policy || 'FALSE',
+      data.bathroom_category || '',
+      data.bathroom_goal || '',
+      data.bathroom_layout || '',
+      data.bathroom_shower_tub || '',
+      data.bathroom_finishes || '',
+      data.bathroom_vanity || '',
+      data.bathroom_durability || '',
+      data.bathroom_budget || '',
+      data.bathroom_upgrades || '',
+      data.kitchen_category || '',
+      data.kitchen_goal || '',
+      data.kitchen_layout || '',
+      data.kitchen_cabinetry || '',
+      data.kitchen_finishes || '',
+      data.kitchen_countertop || '',
+      data.kitchen_upgrades || '',
+      data.kitchen_appliances || '',
+      data.kitchen_durability || '',
+      data.kitchen_budget || '',
       data.created_at || new Date().toISOString(),
       data.status || 'new'
     ];
@@ -139,12 +192,23 @@ function testDoPost() {
     message: 'Test message',
     is_owner: 'TRUE',
     address: '123 Test St',
-    project_type: 'Kitchen',
+    project_type: 'Bathroom Remodel',
     property_type: 'Residential',
     square_feet: '500',
     budget: '$25k-$50k',
     timeline: '1-3 months',
     preferred_contact: 'Email',
+    portfolio_project: 'Bathroom Remodel',
+    privacy_policy: 'TRUE',
+    bathroom_category: 'Mid-Range',
+    bathroom_goal: 'mid-range',
+    bathroom_layout: 'mid-range',
+    bathroom_shower_tub: 'mid-range',
+    bathroom_finishes: 'mid-range',
+    bathroom_vanity: 'mid-range',
+    bathroom_durability: 'mid-range',
+    bathroom_budget: 'mid-range',
+    bathroom_upgrades: 'heated_floors, shower_niches',
     created_at: new Date().toISOString(),
     status: 'new'
   };

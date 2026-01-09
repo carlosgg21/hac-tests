@@ -289,28 +289,34 @@ document.addEventListener("DOMContentLoaded", () => {
   const header = document.getElementById("header")
   const scrollToTopBtn = document.getElementById("scrollToTopBtn")
   
-  window.addEventListener("scroll", () => {
-    if (window.scrollY > 20) {
-      header.classList.add("scrolled")
-    } else {
-      header.classList.remove("scrolled")
-    }
-    
-    // Show/hide scroll to top button
-    if (window.scrollY > 300) {
-      scrollToTopBtn.classList.add("visible")
-    } else {
-      scrollToTopBtn.classList.remove("visible")
-    }
-  })
-  
-  // Scroll to top functionality
-  scrollToTopBtn.addEventListener("click", () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
+  if (header) {
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 20) {
+        header.classList.add("scrolled")
+      } else {
+        header.classList.remove("scrolled")
+      }
     })
-  })
+  }
+  
+  // Show/hide scroll to top button
+  if (scrollToTopBtn) {
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        scrollToTopBtn.classList.add("visible")
+      } else {
+        scrollToTopBtn.classList.remove("visible")
+      }
+    })
+    
+    // Scroll to top functionality
+    scrollToTopBtn.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      })
+    })
+  }
 
   // Mobile menu toggle
   const mobileMenuBtn = document.getElementById("mobileMenuBtn")
@@ -340,7 +346,7 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault()
       const target = document.querySelector(this.getAttribute("href"))
       if (target) {
-        const headerHeight = header.offsetHeight
+        const headerHeight = header ? header.offsetHeight : 0
         const targetPosition = target.offsetTop - headerHeight
         window.scrollTo({
           top: targetPosition,
@@ -438,23 +444,66 @@ document.addEventListener("DOMContentLoaded", () => {
     quoteWizardModal.classList.add("hidden")
     document.body.style.overflow = ""
     currentStep = 1
+    
+    // Restore all required attributes to their original state
+    const allFields = document.querySelectorAll("[data-was-required]")
+    allFields.forEach(field => {
+      field.setAttribute("required", "required")
+      field.removeAttribute("data-was-required")
+    })
+    
     updateWizardSteps()
   }
 
   // Update wizard step indicators
   function updateWizardSteps() {
     const isBathroom = isBathroomProject()
+    const isKitchen = isKitchenProject()
     
     // Show/hide step groups based on project type
     const defaultSteps = document.querySelectorAll(".wizard-step-default")
     const bathroomSteps = document.querySelectorAll(".wizard-step-bathroom")
+    const kitchenSteps = document.querySelectorAll(".wizard-step-kitchen")
 
     if (isBathroom) {
       defaultSteps.forEach(step => step.classList.add("hidden"))
       bathroomSteps.forEach(step => step.classList.remove("hidden"))
+      kitchenSteps.forEach(step => step.classList.add("hidden"))
+      
+      // Remove required attribute from default and kitchen form fields when hidden
+      const defaultRequiredFields = document.querySelectorAll(".wizard-step-default [required], .wizard-step-kitchen [required]")
+      defaultRequiredFields.forEach(field => {
+        field.removeAttribute("required")
+        field.setAttribute("data-was-required", "true")
+      })
+    } else if (isKitchen) {
+      defaultSteps.forEach(step => step.classList.add("hidden"))
+      bathroomSteps.forEach(step => step.classList.add("hidden"))
+      kitchenSteps.forEach(step => step.classList.remove("hidden"))
+      
+      // Remove required attribute from default and bathroom form fields when hidden
+      const defaultRequiredFields = document.querySelectorAll(".wizard-step-default [required], .wizard-step-bathroom [required]")
+      defaultRequiredFields.forEach(field => {
+        field.removeAttribute("required")
+        field.setAttribute("data-was-required", "true")
+      })
     } else {
       defaultSteps.forEach(step => step.classList.remove("hidden"))
       bathroomSteps.forEach(step => step.classList.add("hidden"))
+      kitchenSteps.forEach(step => step.classList.add("hidden"))
+      
+      // Restore required attribute for default form fields when visible
+      const defaultFields = document.querySelectorAll(".wizard-step-default [data-was-required]")
+      defaultFields.forEach(field => {
+        field.setAttribute("required", "required")
+      })
+      
+      // Remove required attribute from bathroom and kitchen form fields when hidden
+      const specialRequiredFields = document.querySelectorAll(".wizard-step-bathroom [required], .wizard-step-kitchen [required]")
+      specialRequiredFields.forEach(field => {
+        field.removeAttribute("required")
+        field.setAttribute("data-was-required", "true")
+      })
     }
 
     // Update step indicators
@@ -473,6 +522,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const stepNum = parseInt(content.getAttribute("data-step"))
       const isDefault = content.classList.contains("wizard-step-default")
       const isBathroomStep = content.classList.contains("wizard-step-bathroom")
+      const isKitchenStep = content.classList.contains("wizard-step-kitchen")
       const isStep1 = stepNum === 1
       
       // Remove active from all
@@ -489,7 +539,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         // Show only the active step that matches the project type
         if (stepNum === currentStep) {
-          if ((isBathroom && isBathroomStep) || (!isBathroom && isDefault)) {
+          if ((isBathroom && isBathroomStep) || (isKitchen && isKitchenStep) || (!isBathroom && !isKitchen && isDefault)) {
             content.classList.add("active")
             content.classList.remove("hidden")
           } else {
@@ -589,6 +639,13 @@ document.addEventListener("DOMContentLoaded", () => {
     return portfolioProject === "Bathroom Remodel" || projectType === "Bathroom"
   }
 
+  // Check if current project is Kitchen Renovation
+  function isKitchenProject() {
+    const portfolioProject = document.getElementById("wizardPortfolioProject")?.value
+    const projectType = document.getElementById("wizardProjectType")?.value
+    return portfolioProject === "Kitchen Renovation" || projectType === "Kitchen"
+  }
+
 
   // Calculate bathroom category based on answers
   function calculateBathroomCategory() {
@@ -638,9 +695,59 @@ document.addEventListener("DOMContentLoaded", () => {
     return "High-End"
   }
 
+  // Calculate kitchen category based on answers
+  function calculateKitchenCategory() {
+    const answers = {
+      goal: document.querySelector('input[name="kitchen_goal"]:checked')?.getAttribute("data-category"),
+      layout: document.querySelector('input[name="kitchen_layout"]:checked')?.getAttribute("data-category"),
+      cabinetry: document.querySelector('input[name="kitchen_cabinetry"]:checked')?.getAttribute("data-category"),
+      finishes: document.querySelector('input[name="kitchen_finishes"]:checked')?.getAttribute("data-category"),
+      countertop: document.querySelector('input[name="kitchen_countertop"]:checked')?.getAttribute("data-category"),
+      appliances: document.querySelector('input[name="kitchen_appliances"]:checked')?.getAttribute("data-category"),
+      durability: document.querySelector('input[name="kitchen_durability"]:checked')?.getAttribute("data-category"),
+      budget: document.querySelector('input[name="kitchen_budget"]:checked')?.getAttribute("data-category")
+    }
+
+    // Count upgrades
+    const upgrades = document.querySelectorAll('input[name="kitchen_upgrades"]:checked')
+    let upgradesCategory = "basic"
+    if (upgrades.length === 0) {
+      upgradesCategory = "basic"
+    } else if (upgrades.length <= 2) {
+      upgradesCategory = "mid-range"
+    } else {
+      upgradesCategory = "high-end"
+    }
+
+    // Map categories to points
+    const categoryPoints = { "basic": 1, "mid-range": 2, "high-end": 3 }
+    let totalPoints = 0
+    let count = 0
+
+    Object.values(answers).forEach(category => {
+      if (category) {
+        totalPoints += categoryPoints[category] || 0
+        count++
+      }
+    })
+
+    // Add upgrades points
+    totalPoints += categoryPoints[upgradesCategory] || 0
+    count++
+
+    if (count === 0) return "Basic"
+
+    const average = totalPoints / count
+
+    if (average < 1.5) return "Basic"
+    if (average <= 2.5) return "Mid-Range"
+    return "High-End"
+  }
+
   // Update review section
   function updateReview() {
     const isBathroom = isBathroomProject()
+    const isKitchen = isKitchenProject()
     const formData = new FormData(quoteWizardForm)
     
     if (isBathroom) {
@@ -677,6 +784,48 @@ document.addEventListener("DOMContentLoaded", () => {
         <p><strong>6. Upgrades:</strong> ${upgrades.length > 0 ? upgrades.join(", ") : "None"}</p>
         <p><strong>7. Durability:</strong> ${bathroomAnswers.durability}</p>
         <p><strong>8. Budget:</strong> ${bathroomAnswers.budget}</p>
+        ${formData.get("message") ? `<p><strong>Notes:</strong> ${formData.get("message")}</p>` : ""}
+      `
+      
+      if (categoryDiv) {
+        categoryDiv.textContent = category
+      }
+    } else if (isKitchen) {
+      const reviewDiv = document.getElementById("wizardReviewKitchen")
+      const categoryDiv = document.getElementById("kitchenCategoryValue")
+      const category = calculateKitchenCategory()
+      
+      const kitchenAnswers = {
+        goal: document.querySelector('input[name="kitchen_goal"]:checked')?.closest("label")?.textContent.trim() || "Not answered",
+        layout: document.querySelector('input[name="kitchen_layout"]:checked')?.closest("label")?.textContent.trim() || "Not answered",
+        cabinetry: document.querySelector('input[name="kitchen_cabinetry"]:checked')?.closest("label")?.textContent.trim() || "Not answered",
+        finishes: document.querySelector('input[name="kitchen_finishes"]:checked')?.closest("label")?.textContent.trim() || "Not answered",
+        countertop: document.querySelector('input[name="kitchen_countertop"]:checked')?.closest("label")?.textContent.trim() || "Not answered",
+        appliances: document.querySelector('input[name="kitchen_appliances"]:checked')?.closest("label")?.textContent.trim() || "Not answered",
+        durability: document.querySelector('input[name="kitchen_durability"]:checked')?.closest("label")?.textContent.trim() || "Not answered",
+        budget: document.querySelector('input[name="kitchen_budget"]:checked')?.closest("label")?.textContent.trim() || "Not answered"
+      }
+
+      const upgrades = Array.from(document.querySelectorAll('input[name="kitchen_upgrades"]:checked'))
+        .map(checkbox => checkbox.closest("label")?.textContent.trim())
+        .filter(Boolean)
+
+      reviewDiv.innerHTML = `
+        <p><strong>Name:</strong> ${formData.get("name") || "Not provided"}</p>
+        <p><strong>Email:</strong> ${formData.get("email") || "Not provided"}</p>
+        <p><strong>Phone:</strong> ${formData.get("phone") || "Not provided"}</p>
+        <p><strong>Address:</strong> ${formData.get("address") || "Not provided"}</p>
+        <p><strong>Property Owner:</strong> ${formData.get("is_owner") ? "Yes" : "No"}</p>
+        <hr class="my-2">
+        <p><strong>1. Main Goal:</strong> ${kitchenAnswers.goal}</p>
+        <p><strong>2. Layout:</strong> ${kitchenAnswers.layout}</p>
+        <p><strong>3. Cabinetry:</strong> ${kitchenAnswers.cabinetry}</p>
+        <p><strong>4. Finishes:</strong> ${kitchenAnswers.finishes}</p>
+        <p><strong>5. Countertop:</strong> ${kitchenAnswers.countertop}</p>
+        <p><strong>6. Upgrades:</strong> ${upgrades.length > 0 ? upgrades.join(", ") : "None"}</p>
+        <p><strong>7. Appliances:</strong> ${kitchenAnswers.appliances}</p>
+        <p><strong>8. Durability:</strong> ${kitchenAnswers.durability}</p>
+        <p><strong>9. Budget:</strong> ${kitchenAnswers.budget}</p>
         ${formData.get("message") ? `<p><strong>Notes:</strong> ${formData.get("message")}</p>` : ""}
       `
       
@@ -724,12 +873,31 @@ document.addEventListener("DOMContentLoaded", () => {
   quoteWizardForm.addEventListener("submit", async (e) => {
     e.preventDefault()
     
+    // Remove required attribute from all hidden fields before validation
+    const isBathroom = isBathroomProject()
+    const isKitchen = isKitchenProject()
+    if (isBathroom) {
+      const defaultFields = document.querySelectorAll(".wizard-step-default [required], .wizard-step-kitchen [required]")
+      defaultFields.forEach(field => {
+        field.removeAttribute("required")
+      })
+    } else if (isKitchen) {
+      const defaultFields = document.querySelectorAll(".wizard-step-default [required], .wizard-step-bathroom [required]")
+      defaultFields.forEach(field => {
+        field.removeAttribute("required")
+      })
+    } else {
+      const specialFields = document.querySelectorAll(".wizard-step-bathroom [required], .wizard-step-kitchen [required]")
+      specialFields.forEach(field => {
+        field.removeAttribute("required")
+      })
+    }
+    
     if (!validateCurrentStep()) {
       return
     }
 
     const formData = new FormData(quoteWizardForm)
-    const isBathroom = isBathroomProject()
     
     const data = {
       name: formData.get("name"),
@@ -744,7 +912,7 @@ document.addEventListener("DOMContentLoaded", () => {
       status: "new"
     }
 
-    // Add bathroom-specific data or default project data
+    // Add bathroom-specific, kitchen-specific, or default project data
     if (isBathroom) {
       data.project_type = "Bathroom Remodel"
       data.bathroom_category = calculateBathroomCategory()
@@ -756,6 +924,20 @@ document.addEventListener("DOMContentLoaded", () => {
       data.bathroom_durability = document.querySelector('input[name="bathroom_durability"]:checked')?.value || ""
       data.bathroom_budget = document.querySelector('input[name="bathroom_budget"]:checked')?.value || ""
       data.bathroom_upgrades = Array.from(document.querySelectorAll('input[name="bathroom_upgrades"]:checked'))
+        .map(cb => cb.value)
+        .join(", ")
+    } else if (isKitchen) {
+      data.project_type = "Kitchen Renovation"
+      data.kitchen_category = calculateKitchenCategory()
+      data.kitchen_goal = document.querySelector('input[name="kitchen_goal"]:checked')?.value || ""
+      data.kitchen_layout = document.querySelector('input[name="kitchen_layout"]:checked')?.value || ""
+      data.kitchen_cabinetry = document.querySelector('input[name="kitchen_cabinetry"]:checked')?.value || ""
+      data.kitchen_finishes = document.querySelector('input[name="kitchen_finishes"]:checked')?.value || ""
+      data.kitchen_countertop = document.querySelector('input[name="kitchen_countertop"]:checked')?.value || ""
+      data.kitchen_appliances = document.querySelector('input[name="kitchen_appliances"]:checked')?.value || ""
+      data.kitchen_durability = document.querySelector('input[name="kitchen_durability"]:checked')?.value || ""
+      data.kitchen_budget = document.querySelector('input[name="kitchen_budget"]:checked')?.value || ""
+      data.kitchen_upgrades = Array.from(document.querySelectorAll('input[name="kitchen_upgrades"]:checked'))
         .map(cb => cb.value)
         .join(", ")
     } else {
@@ -790,41 +972,76 @@ document.addEventListener("DOMContentLoaded", () => {
       
       // Log data being sent for debugging
       console.log("Sending data to Google Sheets:", data)
+      console.log("Data keys:", Object.keys(data))
+      console.log("Data values:", Object.values(data))
       
-      // Use FormData approach which works better with Google Apps Script
-      const formData = new FormData()
-      Object.keys(data).forEach(key => {
-        formData.append(key, data[key])
-      })
-      
-      // Alternative: Send as URL-encoded form data (more compatible with Google Apps Script)
+      // Prepare URL-encoded form data (more compatible with Google Apps Script)
       const urlEncodedData = new URLSearchParams()
       Object.keys(data).forEach(key => {
-        urlEncodedData.append(key, data[key])
+        const value = data[key] || ''
+        urlEncodedData.append(key, value)
+        console.log(`Adding field: ${key} = ${value}`)
       })
       
-      // Try with URL-encoded first (more reliable with Google Apps Script)
-      const response = await fetch(scriptURL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: urlEncodedData.toString()
-      })
+      console.log("URL-encoded data:", urlEncodedData.toString())
       
-      // Since we use no-cors, we can't read the response, but we can log
-      console.log("Request sent to Google Sheets")
+      // Try with CORS first to see the response
+      let response
+      let success = false
       
-      // Wait a moment to ensure the request is processed
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      try {
+        response = await fetch(scriptURL, {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: urlEncodedData.toString()
+        })
+        
+        if (response.ok) {
+          const result = await response.json()
+          console.log("Response from Google Sheets:", result)
+          success = true
+        } else {
+          console.error("Error response:", response.status, response.statusText)
+          // Try with no-cors as fallback
+          throw new Error("CORS request failed, trying no-cors")
+        }
+      } catch (corsError) {
+        console.log("CORS failed, trying no-cors mode:", corsError)
+        // Fallback to no-cors mode
+        try {
+          await fetch(scriptURL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: urlEncodedData.toString()
+          })
+          console.log("Request sent in no-cors mode (cannot verify response)")
+          // With no-cors, we can't verify success, so we assume it worked
+          success = true
+        } catch (noCorsError) {
+          console.error("Both CORS and no-cors failed:", noCorsError)
+          throw noCorsError
+        }
+      }
       
-      // Show success message
-      const successMessage = currentLanguage === "en"
-        ? "Thank you! Your quote request has been submitted. We will contact you soon."
-        : "Merci! Votre demande de devis a été soumise. Nous vous contacterons bientôt."
-      
-      alert(successMessage)
+      if (success) {
+        // Wait a moment to ensure the request is processed
+        await new Promise(resolve => setTimeout(resolve, 500))
+        
+        // Show success message
+        const successMessage = currentLanguage === "en"
+          ? "Thank you! Your quote request has been submitted. We will contact you soon."
+          : "Merci! Votre demande de devis a été soumise. Nous vous contacterons bientôt."
+        
+        alert(successMessage)
+      } else {
+        throw new Error("Failed to submit form")
+      }
       
       // Reset forms
       quoteWizardForm.reset()

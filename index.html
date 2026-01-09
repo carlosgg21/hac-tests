@@ -995,6 +995,216 @@
                     </div>
                 </div>
 
+                <!-- Step 2: Kitchen Discovery - Part 1 -->
+                <div class="wizard-step-content wizard-step-kitchen hidden" data-step="2">
+                    <h3 class="text-xl font-bold text-primary mb-6">Kitchen Project Discovery</h3>
+                    <div class="space-y-6">
+                        <!-- Question 1: Main Goal -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">1. What is your main goal for this kitchen? *</label>
+                            <div class="space-y-2">
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="kitchen_goal" value="basic" required class="mt-1 mr-3" data-category="basic">
+                                    <span>Refresh the look while keeping the kitchen functional</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="kitchen_goal" value="mid-range" required class="mt-1 mr-3" data-category="mid-range">
+                                    <span>Upgrade for better flow, storage, and a modern style</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="kitchen_goal" value="high-end" required class="mt-1 mr-3" data-category="high-end">
+                                    <span>Create a custom, design-driven kitchen experience</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Question 2: Layout -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">2. Are you planning to keep the existing kitchen layout? *</label>
+                            <div class="space-y-2">
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="kitchen_layout" value="basic" required class="mt-1 mr-3" data-category="basic">
+                                    <span>Yes, no changes to plumbing or electrical</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="kitchen_layout" value="mid-range" required class="mt-1 mr-3" data-category="mid-range">
+                                    <span>Minor adjustments (appliance relocation, island addition)</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="kitchen_layout" value="high-end" required class="mt-1 mr-3" data-category="high-end">
+                                    <span>No, I want a full layout redesign</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Question 3: Cabinetry -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">3. What type of cabinetry are you interested in? *</label>
+                            <div class="space-y-2">
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="kitchen_cabinetry" value="basic" required class="mt-1 mr-3" data-category="basic">
+                                    <span>Stock cabinets or refacing existing cabinets</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="kitchen_cabinetry" value="mid-range" required class="mt-1 mr-3" data-category="mid-range">
+                                    <span>Semi-custom cabinets with upgraded storage options</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="kitchen_cabinetry" value="high-end" required class="mt-1 mr-3" data-category="high-end">
+                                    <span>Fully custom cabinetry built to fit the space</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Kitchen Discovery - Part 2 -->
+                <div class="wizard-step-content wizard-step-kitchen hidden" data-step="3">
+                    <h3 class="text-xl font-bold text-primary mb-6">Kitchen Project Discovery (Continued)</h3>
+                    <div class="space-y-6">
+                        <!-- Question 4: Finishes -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">4. What level of finishes do you prefer? *</label>
+                            <div class="space-y-2">
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="kitchen_finishes" value="basic" required class="mt-1 mr-3" data-category="basic">
+                                    <span>Simple, durable, and cost-effective</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="kitchen_finishes" value="mid-range" required class="mt-1 mr-3" data-category="mid-range">
+                                    <span>Modern finishes with upgraded materials</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="kitchen_finishes" value="high-end" required class="mt-1 mr-3" data-category="high-end">
+                                    <span>Luxury finishes and designer details</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Question 5: Countertop -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">5. What type of countertop are you considering? *</label>
+                            <div class="space-y-2">
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="kitchen_countertop" value="basic" required class="mt-1 mr-3" data-category="basic">
+                                    <span>Laminate or entry-level materials</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="kitchen_countertop" value="mid-range" required class="mt-1 mr-3" data-category="mid-range">
+                                    <span>Quartz or upgraded stone</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="kitchen_countertop" value="high-end" required class="mt-1 mr-3" data-category="high-end">
+                                    <span>Natural stone or premium surfaces</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Question 6: Upgrades (Multiple selection) -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">6. Are you planning to add or upgrade any of the following? (Select all that apply)</label>
+                            <div class="space-y-2">
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="checkbox" name="kitchen_upgrades" value="kitchen_island" class="mt-1 mr-3">
+                                    <span>Kitchen island or peninsula</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="checkbox" name="kitchen_upgrades" value="soft_close" class="mt-1 mr-3">
+                                    <span>Soft-close drawers & organizers</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="checkbox" name="kitchen_upgrades" value="under_cabinet_lighting" class="mt-1 mr-3">
+                                    <span>Under-cabinet lighting</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="checkbox" name="kitchen_upgrades" value="built_in_pantry" class="mt-1 mr-3">
+                                    <span>Built-in pantry or custom storage</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Kitchen Discovery - Part 3 + Review -->
+                <div class="wizard-step-content wizard-step-kitchen hidden" data-step="4">
+                    <h3 class="text-xl font-bold text-primary mb-6">Kitchen Project Discovery (Final)</h3>
+                    <div class="space-y-6">
+                        <!-- Question 7: Appliances -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">7. What appliance level are you aiming for? *</label>
+                            <div class="space-y-2">
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="kitchen_appliances" value="basic" required class="mt-1 mr-3" data-category="basic">
+                                    <span>Existing appliances or standard replacements</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="kitchen_appliances" value="mid-range" required class="mt-1 mr-3" data-category="mid-range">
+                                    <span>New appliances with better efficiency and features</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="kitchen_appliances" value="high-end" required class="mt-1 mr-3" data-category="high-end">
+                                    <span>Panel-ready or high-end integrated appliances</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Question 8: Durability -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">8. How important is long-term durability and craftsmanship? *</label>
+                            <div class="space-y-2">
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="kitchen_durability" value="basic" required class="mt-1 mr-3" data-category="basic">
+                                    <span>Standard installation is fine</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="kitchen_durability" value="mid-range" required class="mt-1 mr-3" data-category="mid-range">
+                                    <span>I want quality materials and solid installation</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="kitchen_durability" value="high-end" required class="mt-1 mr-3" data-category="high-end">
+                                    <span>I want premium craftsmanship and long-term value</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Question 9: Budget -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">9. Which budget range best aligns with your expectations? *</label>
+                            <div class="space-y-2">
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="kitchen_budget" value="basic" required class="mt-1 mr-3" data-category="basic">
+                                    <span>$15,000 – $25,000</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="kitchen_budget" value="mid-range" required class="mt-1 mr-3" data-category="mid-range">
+                                    <span>$25,000 – $45,000</span>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="kitchen_budget" value="high-end" required class="mt-1 mr-3" data-category="high-end">
+                                    <span>$45,000 – $80,000+</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Additional Notes -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2" data-translate="form_message">Additional Notes (Optional)</label>
+                            <textarea id="wizardMessageKitchen" name="message" rows="4"
+                                      class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-accent focus:border-accent transition-colors"
+                                      placeholder="Any additional information about your project..."></textarea>
+                        </div>
+
+                        <!-- Review Section -->
+                        <div class="bg-gray-50 rounded-lg p-4 space-y-2">
+                            <h4 class="font-semibold text-gray-900 mb-3" data-translate="wizard_review_title">Review Your Information:</h4>
+                            <div id="wizardReviewKitchen" class="text-sm text-gray-700 space-y-1"></div>
+                            <div id="kitchenCategoryResult" class="mt-4 p-3 bg-primary/10 rounded-md border border-primary/20">
+                                <p class="font-semibold text-primary">Recommended Category: <span id="kitchenCategoryValue" class="text-accent"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Navigation Buttons -->
                 <div class="wizard-navigation">
                     <button type="button" id="wizardPrevBtn" class="wizard-btn wizard-btn-secondary hidden" data-translate="wizard_prev">Previous</button>
