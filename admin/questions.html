@@ -1,0 +1,1841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question Manager - Admin Dashboard</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body, html { 
+      height: 100%; 
+      font-family: 'Inter', sans-serif;
+    }
+    
+    /* Responsive sidebar */
+    @media (max-width: 1023px) {
+      .sidebar {
+        position: fixed;
+        left: -260px;
+        top: 4rem;
+        width: 16rem;
+        height: calc(100vh - 4rem);
+        z-index: 50;
+        background: #1e3a5f;
+        border-right: 1px solid #1e3a5f;
+        transition: left 0.3s ease;
+      }
+      .sidebar.open {
+        left: 0;
+      }
+      .main-content {
+        width: 100%;
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 4rem;
+        bottom: 0;
+        width: 16rem;
+        z-index: 20;
+        background: #1e3a5f;
+        border-right: 1px solid #1e3a5f;
+      }
+      .main-content {
+        margin-left: 16rem;
+        width: calc(100% - 16rem);
+      }
+    }
+    
+    .sidebar-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 40;
+      display: none;
+    }
+    
+    /* Custom scrollbar */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 3px;
+    }
+    
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 3px;
+    }
+    
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #a1a1a1;
+    }
+    
+    /* Table styling */
+    .table-container {
+      overflow-x: auto;
+      border-radius: 0.5rem;
+      border: 1px solid #e5e7eb;
+    }
+    
+    .data-table {
+      min-width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+    
+    .data-table th {
+      position: sticky;
+      top: 0;
+      background-color: #f9fafb;
+      z-index: 10;
+      white-space: nowrap;
+    }
+    
+    .data-table th:first-child {
+      border-top-left-radius: 0.5rem;
+    }
+    
+    .data-table th:last-child {
+      border-top-right-radius: 0.5rem;
+    }
+    
+    .data-table tbody tr:hover {
+      background-color: #f8fafc;
+    }
+    
+    .data-table tbody tr.selected {
+      background-color: #eff6ff;
+    }
+    
+    /* Badge styling */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border-radius: 9999px;
+    }
+    
+    .badge-kitchen {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+    
+    .badge-bathroom {
+      background-color: #dbeafe;
+      color: #1e40af;
+    }
+    
+    .badge-radio {
+      background-color: #dcfce7;
+      color: #166534;
+    }
+    
+    .badge-checkbox {
+      background-color: #e0e7ff;
+      color: #3730a3;
+    }
+    
+    .badge-required {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+    
+    .badge-optional {
+      background-color: #f3f4f6;
+      color: #4b5563;
+    }
+    
+    /* Modal styling */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .modal-content {
+      background-color: white;
+      border-radius: 0.75rem;
+      max-width: 800px;
+      width: 90%;
+      max-height: 90vh;
+      overflow: hidden;
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+    }
+    
+    .modal-overlay.active .modal-content {
+      transform: translateY(0);
+    }
+    
+    /* Animation for success/error messages */
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .animate-slideIn {
+      animation: slideIn 0.3s ease;
+    }
+    
+    /* Loading spinner */
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #3b82f6;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <!-- NAVBAR TOP -->
+  <nav class="fixed top-0 left-0 w-full h-16 bg-white border-b border-gray-200 z-30 flex items-center justify-between px-6 shadow-sm">
+    <div class="flex items-center gap-3">
+      <!-- Mobile menu button -->
+      <button id="sidebarToggle" class="lg:hidden p-2 inline-flex items-center rounded hover:bg-gray-100 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+      <!-- Logo/Brand -->
+      <div class="inline-flex items-center gap-2">
+        <div class="w-10 h-10 bg-blue-700 rounded-lg flex items-center justify-center">
+          <span class="text-white font-bold">HAC</span>
+        </div>
+        <span class="text-xl font-bold text-blue-700 hidden sm:inline">Question Manager</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-4">
+      <!-- Save status -->
+      <div id="saveStatus" class="hidden px-3 py-1 rounded-lg text-sm font-medium bg-green-100 text-green-800">
+        <i class="fas fa-check-circle mr-2"></i>
+        <span>All changes saved</span>
+      </div>
+      
+      <!-- Sync status -->
+      <div id="syncStatus" class="hidden px-3 py-1 rounded-lg text-sm font-medium bg-blue-100 text-blue-800">
+        <i class="fas fa-sync-alt mr-2"></i>
+        <span>Syncing...</span>
+      </div>
+      
+      <!-- User info -->
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+          <i class="fas fa-user text-blue-700"></i>
+        </div>
+        <span class="hidden md:inline font-medium text-gray-700">Admin</span>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- SIDEBAR BACKDROP (Mobile Only) -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+  
+  <!-- LAYOUT -->
+  <div class="min-h-screen pt-16">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="mainSidebar">
+      <nav class="flex flex-col h-full py-6">
+        <div class="mb-6 px-4">
+          <span class="text-sm font-semibold tracking-wider text-white/70 uppercase">Menu</span>
+        </div>
+        <div class="flex-1 space-y-1 px-3">
+          <a href="dashboard.html" class="flex items-center px-3 py-2.5 rounded-lg text-white/80 gap-3 font-medium text-sm hover:bg-white/10 transition">
+            <i class="fas fa-tachometer-alt w-5 h-5"></i>
+            Dashboard
+          </a>
+          <a href="clients.html" class="flex items-center px-3 py-2.5 rounded-lg text-white/80 gap-3 font-medium text-sm hover:bg-white/10 transition">
+            <i class="fas fa-users w-5 h-5"></i>
+            Clients
+          </a>
+          <a href="questions.html" class="flex items-center px-3 py-2.5 rounded-lg bg-white/20 text-white gap-3 font-medium text-sm hover:bg-white/30 transition">
+            <i class="fas fa-edit w-5 h-5"></i>
+            Question Manager
+          </a>
+          <a href="#" class="flex items-center px-3 py-2.5 rounded-lg text-white/80 gap-3 font-medium text-sm hover:bg-white/10 transition">
+            <i class="fas fa-chart-bar w-5 h-5"></i>
+            Reports
+          </a>
+          <a href="#" class="flex items-center px-3 py-2.5 rounded-lg text-white/80 gap-3 font-medium text-sm hover:bg-white/10 transition">
+            <i class="fas fa-cog w-5 h-5"></i>
+            Settings
+          </a>
+        </div>
+        <div class="px-4 pt-6 border-t border-white/20">
+          <button id="logoutBtn" class="w-full px-4 py-2 rounded-lg border border-white/30 text-white font-medium hover:bg-white/10 transition">
+            Logout
+          </button>
+        </div>
+      </nav>
+    </aside>
+    
+    <!-- MAIN CONTENT -->
+    <main class="main-content px-4 md:px-6 py-6">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
+        <div>
+          <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Question Management</h1>
+          <p class="text-gray-600 mt-1">Manage all questionnaire questions from a single table view</p>
+        </div>
+        <div class="flex gap-3 flex-wrap">
+          <button id="loadFromJsonBtn" class="px-4 py-2.5 bg-blue-700 text-white rounded-lg font-medium hover:bg-blue-800 transition shadow-sm flex items-center gap-2">
+            <i class="fas fa-file-import"></i>
+            Load from JSON
+          </button>
+          <button id="saveToJsonBtn" class="px-4 py-2.5 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition shadow-sm flex items-center gap-2">
+            <i class="fas fa-save"></i>
+            Save to JSON
+          </button>
+          <button id="addQuestionBtn" class="px-4 py-2.5 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition shadow-sm flex items-center gap-2">
+            <i class="fas fa-plus"></i>
+            Add Question
+          </button>
+        </div>
+      </div>
+      
+      <!-- Stats Bar -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-600">Total Questions</p>
+              <p class="text-2xl font-bold text-gray-800" id="totalQuestions">0</p>
+            </div>
+            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+              <i class="fas fa-question-circle text-blue-700 text-xl"></i>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-600">Kitchen</p>
+              <p class="text-2xl font-bold text-gray-800" id="kitchenQuestions">0</p>
+            </div>
+            <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+              <i class="fas fa-utensils text-orange-600 text-xl"></i>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-600">Bathroom</p>
+              <p class="text-2xl font-bold text-gray-800" id="bathroomQuestions">0</p>
+            </div>
+            <div class="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center">
+              <i class="fas fa-bath text-teal-600 text-xl"></i>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-600">JSON Status</p>
+              <p class="text-lg font-medium text-gray-800" id="jsonStatus">Not Loaded</p>
+            </div>
+            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+              <i class="fas fa-database text-green-600 text-xl"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Filters and Search -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6">
+        <div class="flex flex-col md:flex-row gap-4">
+          <!-- Project Filter -->
+          <div class="flex-1">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Filter by Project</label>
+            <div class="flex flex-wrap gap-2">
+              <button class="filter-btn active px-4 py-2 rounded-lg font-medium transition" data-filter="all">
+                All Questions
+              </button>
+              <button class="filter-btn px-4 py-2 rounded-lg font-medium transition" data-filter="kitchen">
+                Kitchen Only
+              </button>
+              <button class="filter-btn px-4 py-2 rounded-lg font-medium transition" data-filter="bathroom">
+                Bathroom Only
+              </button>
+            </div>
+          </div>
+          
+          <!-- Search -->
+          <div class="md:w-1/3">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Search Questions</label>
+            <div class="relative">
+              <input type="text" id="searchInput" placeholder="Search by ID or text..." 
+                     class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+              <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+          </div>
+          
+          <!-- Actions -->
+          <div class="md:w-auto">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Bulk Actions</label>
+            <select id="bulkActions" class="w-full md:w-auto px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white">
+              <option value="">Select Action</option>
+              <option value="export">Export Selected</option>
+              <option value="duplicate">Duplicate Selected</option>
+              <option value="delete">Delete Selected</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Main Table -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+          <h2 class="text-lg font-bold text-gray-800">Questions Table</h2>
+          <div class="flex items-center gap-2 text-sm text-gray-600">
+            <span id="selectedCount">0 selected</span>
+            <span class="mx-2">•</span>
+            <span id="visibleCount">0 visible</span>
+          </div>
+        </div>
+        
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th class="w-12 px-4 py-3">
+                  <input type="checkbox" id="selectAll" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                </th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Project</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Question</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Options</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Required</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="questionsTableBody" class="bg-white divide-y divide-gray-200">
+              <!-- Loading state -->
+              <tr id="loadingRow">
+                <td colspan="8" class="px-4 py-12 text-center">
+                  <div class="flex flex-col items-center justify-center">
+                    <div class="spinner mb-4"></div>
+                    <p class="text-gray-600">Loading questions from JSON file...</p>
+                    <p class="text-sm text-gray-500 mt-2" id="jsonPath">../data/questions-es.json</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- Pagination/Info -->
+        <div class="px-4 py-3 border-t border-gray-200 flex items-center justify-between">
+          <div class="text-sm text-gray-700">
+            Showing <span id="showingFrom">1</span> to <span id="showingTo">10</span> of <span id="totalRows">0</span> questions
+          </div>
+          <div class="flex gap-2">
+            <button id="prevPageBtn" class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+              Previous
+            </button>
+            <button id="nextPageBtn" class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Edit Question Modal -->
+  <div class="modal-overlay" id="editQuestionModal">
+    <div class="modal-content">
+      <div class="p-6 border-b border-gray-200">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xl font-bold text-gray-800">Edit Question</h3>
+          <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700">
+            <i class="fas fa-times text-2xl"></i>
+          </button>
+        </div>
+        <p class="text-sm text-gray-600 mt-1" id="modalSubtitle">Modify question details</p>
+      </div>
+      
+      <form id="questionForm" class="p-6 max-h-[calc(90vh-120px)] overflow-y-auto custom-scrollbar">
+        <!-- Basic Information -->
+        <div class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Project -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Project *</label>
+              <select id="editProject" name="project" required
+                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                <option value="">Select project</option>
+                <option value="kitchen">Kitchen</option>
+                <option value="bathroom">Bathroom</option>
+              </select>
+            </div>
+            
+            <!-- Question ID -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Question ID *</label>
+              <input type="text" id="editId" name="id" required readonly
+                     class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-500">
+              <p class="text-xs text-gray-500 mt-1">Auto-generated, cannot be changed</p>
+            </div>
+          </div>
+          
+          <!-- Question Text -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              Question Text *
+              <span class="text-xs text-gray-500 float-right">
+                <span id="charCount">0</span>/500 characters
+              </span>
+            </label>
+            <textarea id="editQuestionText" name="question" rows="3" required maxlength="500"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      placeholder="Enter your question here..."></textarea>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Question Type -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Question Type *</label>
+              <select id="editType" name="type" required
+                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                <option value="">Select type</option>
+                <option value="radio">Radio (Single Choice)</option>
+                <option value="checkbox">Checkbox (Multiple Choice)</option>
+              </select>
+            </div>
+            
+            <!-- Required -->
+            <div class="flex items-center justify-center">
+              <div class="flex items-center h-full">
+                <input type="checkbox" id="editRequired" name="required"
+                       class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                <label for="editRequired" class="ml-2 text-sm font-medium text-gray-700">
+                  Required question
+                </label>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Options Section -->
+          <div class="border-t border-gray-200 pt-6">
+            <div class="flex items-center justify-between mb-4">
+              <h4 class="text-lg font-medium text-gray-900">Answer Options</h4>
+              <button type="button" id="addOptionBtnModal" class="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg font-medium hover:bg-blue-200 transition text-sm flex items-center gap-2">
+                <i class="fas fa-plus"></i> Add Option
+              </button>
+            </div>
+            
+            <div id="optionsContainer" class="space-y-4">
+              <!-- Options will be added here dynamically -->
+              <div class="text-center py-8 text-gray-500 border-2 border-dashed border-gray-300 rounded-lg">
+                <i class="fas fa-plus-circle text-3xl mb-3"></i>
+                <p class="font-medium">No options added yet</p>
+                <p class="text-sm mt-1">Click "Add Option" to start adding answer choices</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Modal Actions -->
+        <div class="flex flex-wrap gap-3 pt-6 mt-6 border-t border-gray-200">
+          <button type="button" id="cancelEditBtn" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition">
+            Cancel
+          </button>
+          <button type="button" id="previewBtn" class="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition">
+            Preview
+          </button>
+          <button type="submit" id="saveQuestionBtn" class="px-6 py-3 bg-blue-700 text-white rounded-lg font-medium hover:bg-blue-800 transition flex-1">
+            <i class="fas fa-save mr-2"></i> Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal-content max-w-md">
+      <div class="p-6 border-b border-gray-200">
+        <h3 class="text-xl font-bold text-gray-800">Confirm Deletion</h3>
+      </div>
+      
+      <div class="p-6">
+        <div class="flex items-start">
+          <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+            <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900">Are you sure you want to delete this question?</h4>
+            <p class="text-sm text-gray-600 mt-2" id="deleteQuestionText">This action cannot be undone. The question will be permanently removed from the JSON file.</p>
+            <p class="text-sm text-red-600 mt-2 font-medium" id="deleteQuestionId"></p>
+          </div>
+        </div>
+        
+        <div class="flex gap-3 mt-6">
+          <button type="button" id="cancelDeleteBtn" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition flex-1">
+            Cancel
+          </button>
+          <button type="button" id="confirmDeleteBtn" class="px-6 py-3 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition flex-1">
+            Delete Question
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Preview Modal -->
+  <div class="modal-overlay" id="previewModal">
+    <div class="modal-content">
+      <div class="p-6 border-b border-gray-200">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xl font-bold text-gray-800">Question Preview</h3>
+          <button id="closePreviewBtn" class="text-gray-500 hover:text-gray-700">
+            <i class="fas fa-times text-2xl"></i>
+          </button>
+        </div>
+      </div>
+      
+      <div class="p-6 max-h-[70vh] overflow-y-auto">
+        <div id="previewContent" class="space-y-6">
+          <!-- Preview will be loaded here -->
+        </div>
+      </div>
+      
+      <div class="p-6 border-t border-gray-200">
+        <button id="closePreviewBtn2" class="w-full px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition">
+          Close Preview
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed top-20 right-6 z-50 hidden">
+    <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-4 min-w-[300px] animate-slideIn">
+      <div class="flex items-start">
+        <div id="toastIcon" class="mr-3 mt-0.5"></div>
+        <div class="flex-1">
+          <h4 id="toastTitle" class="font-medium text-gray-900"></h4>
+          <p id="toastMessage" class="text-sm text-gray-600 mt-1"></p>
+        </div>
+        <button id="closeToastBtn" class="text-gray-400 hover:text-gray-600">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Global variables
+    let questionsData = {
+      kitchen: [],
+      bathroom: []
+    };
+    let currentFilter = 'all';
+    let searchQuery = '';
+    let currentPage = 1;
+    const rowsPerPage = 10;
+    let selectedQuestions = new Set();
+    let editingQuestion = null;
+    let nextOptionId = 1;
+    let isDataLoaded = false;
+    let hasUnsavedChanges = false;
+
+    // Initialize the application
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeSidebar();
+      loadQuestionsFromJson();
+      setupEventListeners();
+      updateUI();
+    });
+
+    // Sidebar functionality
+    function initializeSidebar() {
+      const sidebar = document.getElementById('mainSidebar');
+      const sidebarBtn = document.getElementById('sidebarToggle');
+      const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+      
+      if (sidebarBtn) {
+        sidebarBtn.addEventListener('click', () => {
+          sidebar.classList.toggle('open');
+          sidebarBackdrop.style.display = sidebar.classList.contains('open') ? 'block' : 'none';
+        });
+      }
+      
+      if (sidebarBackdrop) {
+        sidebarBackdrop.addEventListener('click', () => {
+          sidebar.classList.remove('open');
+          sidebarBackdrop.style.display = 'none';
+        });
+      }
+    }
+
+    // Load questions from questions-en.json
+    async function loadQuestionsFromJson() {
+      showToast('Loading', 'Loading questions from JSON file...', 'info');
+      updateJsonStatus('Loading...');
+      
+      try {
+        const response = await fetch('../data/questions-es.json');
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        // Validate and structure the data
+        questionsData = {
+          kitchen: Array.isArray(data.kitchen) ? data.kitchen : [],
+          bathroom: Array.isArray(data.bathroom) ? data.bathroom : []
+        };
+        
+        isDataLoaded = true;
+        hasUnsavedChanges = false;
+        
+        renderTable();
+        updateStats();
+        updateJsonStatus('Loaded from JSON');
+        showToast('Success', `Loaded ${getTotalQuestions()} questions from JSON`, 'success');
+        
+        // Hide loading row
+        document.getElementById('loadingRow').style.display = 'none';
+        
+      } catch (error) {
+        console.error('Error loading questions-en.json:', error);
+        updateJsonStatus('Error loading');
+        showToast('Error', `Failed to load questions-en.json: ${error.message}`, 'error');
+        
+        // Show error in table
+        document.getElementById('loadingRow').innerHTML = `
+          <td colspan="8" class="px-4 py-12 text-center">
+            <div class="flex flex-col items-center justify-center">
+              <i class="fas fa-exclamation-triangle text-red-500 text-3xl mb-4"></i>
+              <p class="text-gray-600">Failed to load questions from JSON file</p>
+              <p class="text-sm text-gray-500 mt-2">../data/questions-es.json</p>
+              <button onclick="loadQuestionsFromJson()" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                Retry Loading
+              </button>
+            </div>
+          </td>
+        `;
+      }
+    }
+
+    // Save questions to questions-en.json
+    async function saveQuestionsToJson() {
+      if (!isDataLoaded) {
+        showToast('Error', 'No data loaded to save', 'error');
+        return;
+      }
+      
+      showToast('Saving', 'Saving questions to JSON file...', 'info');
+      updateSyncStatus(true);
+      
+      try {
+        // Convert to JSON string with formatting
+        const jsonData = JSON.stringify(questionsData, null, 2);
+        
+        // In a real application, you would send this to a server
+        // For this demo, we'll create a download link
+        const blob = new Blob([jsonData], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'questions-en.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        hasUnsavedChanges = false;
+        updateJsonStatus('Saved to file');
+        updateSyncStatus(false);
+        showToast('Success', `Saved ${getTotalQuestions()} questions to JSON file`, 'success');
+        
+      } catch (error) {
+        console.error('Error saving questions:', error);
+        updateSyncStatus(false);
+        showToast('Error', 'Failed to save questions', 'error');
+      }
+    }
+
+    // Render table with questions
+    function renderTable() {
+      const tableBody = document.getElementById('questionsTableBody');
+      const filteredQuestions = getFilteredQuestions();
+      const paginatedQuestions = getPaginatedQuestions(filteredQuestions);
+      
+      // Clear table
+      tableBody.innerHTML = '';
+      
+      if (paginatedQuestions.length === 0) {
+        const noResultsRow = `
+          <tr>
+            <td colspan="8" class="px-4 py-12 text-center text-gray-500">
+              <i class="fas fa-inbox text-3xl mb-3"></i>
+              <p class="text-lg">No questions found</p>
+              <p class="text-sm mt-2">${searchQuery ? 'Try a different search term' : 'Click "Add Question" to create one'}</p>
+            </td>
+          </tr>
+        `;
+        tableBody.innerHTML = noResultsRow;
+      } else {
+        // Add rows for each question
+        paginatedQuestions.forEach((question, index) => {
+          const row = createQuestionRow(question, index);
+          tableBody.innerHTML += row;
+        });
+      }
+      
+      // Update pagination info
+      updatePaginationInfo(filteredQuestions);
+      
+      // Add event listeners to new rows
+      addRowEventListeners();
+    }
+
+    // Create a table row for a question
+    function createQuestionRow(question, rowIndex) {
+      const isSelected = selectedQuestions.has(question.id);
+      const questionId = question.id || `question_${Date.now()}_${rowIndex}`;
+      
+      // Truncate question text for display
+      const displayText = question.question.length > 100 
+        ? question.question.substring(0, 100) + '...' 
+        : question.question;
+      
+      // Get project badge
+      const projectBadge = question.project === 'kitchen' 
+        ? '<span class="badge badge-kitchen">Kitchen</span>' 
+        : '<span class="badge badge-bathroom">Bathroom</span>';
+      
+      // Get type badge
+      const typeBadge = question.type === 'radio'
+        ? '<span class="badge badge-radio">Single Choice</span>'
+        : '<span class="badge badge-checkbox">Multiple Choice</span>';
+      
+      // Get required badge
+      const requiredBadge = question.required
+        ? '<span class="badge badge-required">Required</span>'
+        : '<span class="badge badge-optional">Optional</span>';
+      
+      // Count options
+      const optionCount = question.options ? question.options.length : 0;
+      
+      return `
+        <tr class="${isSelected ? 'selected' : ''} hover:bg-gray-50" data-id="${questionId}" data-project="${question.project}">
+          <td class="px-4 py-4 whitespace-nowrap">
+            <input type="checkbox" class="row-checkbox rounded border-gray-300 text-blue-600 focus:ring-blue-500" 
+                   data-id="${questionId}" ${isSelected ? 'checked' : ''}>
+          </td>
+          <td class="px-4 py-4 whitespace-nowrap">
+            <div class="text-sm font-medium text-gray-900 font-mono">${questionId}</div>
+          </td>
+          <td class="px-4 py-4 whitespace-nowrap">${projectBadge}</td>
+          <td class="px-4 py-4">
+            <div class="text-sm font-medium text-gray-900">${displayText}</div>
+            <div class="text-xs text-gray-500 mt-1">${questionId}</div>
+          </td>
+          <td class="px-4 py-4 whitespace-nowrap">${typeBadge}</td>
+          <td class="px-4 py-4 whitespace-nowrap">
+            <div class="text-sm text-gray-900">${optionCount} options</div>
+            ${optionCount > 0 ? `<div class="text-xs text-gray-500 mt-1">Click to view</div>` : ''}
+          </td>
+          <td class="px-4 py-4 whitespace-nowrap">${requiredBadge}</td>
+          <td class="px-4 py-4 whitespace-nowrap">
+            <div class="flex items-center gap-2">
+              <button class="edit-btn p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition" 
+                      data-id="${questionId}" data-project="${question.project}" title="Edit">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="view-btn p-2 text-green-600 hover:text-green-800 hover:bg-green-50 rounded-lg transition" 
+                      data-id="${questionId}" data-project="${question.project}" title="Preview">
+                <i class="fas fa-eye"></i>
+              </button>
+              <button class="duplicate-btn p-2 text-purple-600 hover:text-purple-800 hover:bg-purple-50 rounded-lg transition" 
+                      data-id="${questionId}" data-project="${question.project}" title="Duplicate">
+                <i class="fas fa-copy"></i>
+              </button>
+              <button class="delete-btn p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition" 
+                      data-id="${questionId}" data-project="${question.project}" title="Delete">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }
+
+    // Get filtered questions based on current filter and search
+    function getFilteredQuestions() {
+      let filtered = [];
+      
+      // Get questions based on filter
+      if (currentFilter === 'all') {
+        filtered = [...questionsData.kitchen, ...questionsData.bathroom];
+      } else if (currentFilter === 'kitchen') {
+        filtered = [...questionsData.kitchen];
+      } else if (currentFilter === 'bathroom') {
+        filtered = [...questionsData.bathroom];
+      }
+      
+      // Apply search filter
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        filtered = filtered.filter(question => {
+          return (
+            (question.id && question.id.toLowerCase().includes(query)) ||
+            (question.question && question.question.toLowerCase().includes(query))
+          );
+        });
+      }
+      
+      return filtered;
+    }
+
+    // Get paginated questions
+    function getPaginatedQuestions(questions) {
+      const startIndex = (currentPage - 1) * rowsPerPage;
+      const endIndex = startIndex + rowsPerPage;
+      return questions.slice(startIndex, endIndex);
+    }
+
+    // Update pagination information
+    function updatePaginationInfo(filteredQuestions) {
+      const total = filteredQuestions.length;
+      const start = total === 0 ? 0 : (currentPage - 1) * rowsPerPage + 1;
+      const end = Math.min(currentPage * rowsPerPage, total);
+      
+      document.getElementById('showingFrom').textContent = start;
+      document.getElementById('showingTo').textContent = end;
+      document.getElementById('totalRows').textContent = total;
+      document.getElementById('visibleCount').textContent = `${total} questions`;
+      
+      // Update button states
+      document.getElementById('prevPageBtn').disabled = currentPage === 1;
+      document.getElementById('nextPageBtn').disabled = end >= total;
+    }
+
+    // Update statistics
+    function updateStats() {
+      const kitchenCount = questionsData.kitchen.length;
+      const bathroomCount = questionsData.bathroom.length;
+      const total = kitchenCount + bathroomCount;
+      
+      document.getElementById('totalQuestions').textContent = total;
+      document.getElementById('kitchenQuestions').textContent = kitchenCount;
+      document.getElementById('bathroomQuestions').textContent = bathroomCount;
+    }
+
+    // Update JSON status
+    function updateJsonStatus(status) {
+      document.getElementById('jsonStatus').textContent = status;
+    }
+
+    // Update sync status
+    function updateSyncStatus(isSyncing) {
+      const syncStatus = document.getElementById('syncStatus');
+      if (isSyncing) {
+        syncStatus.classList.remove('hidden');
+      } else {
+        syncStatus.classList.add('hidden');
+      }
+    }
+
+    // Update selected count
+    function updateSelectedCount() {
+      const count = selectedQuestions.size;
+      document.getElementById('selectedCount').textContent = `${count} selected`;
+      
+      // Update select all checkbox
+      const selectAll = document.getElementById('selectAll');
+      const visibleRows = document.querySelectorAll('.row-checkbox:not([style*="display: none"])');
+      const visibleChecked = document.querySelectorAll('.row-checkbox:not([style*="display: none"]):checked');
+      
+      if (visibleRows.length === 0) {
+        selectAll.indeterminate = false;
+        selectAll.checked = false;
+      } else if (visibleChecked.length === visibleRows.length) {
+        selectAll.indeterminate = false;
+        selectAll.checked = true;
+      } else if (visibleChecked.length > 0) {
+        selectAll.indeterminate = true;
+        selectAll.checked = false;
+      } else {
+        selectAll.indeterminate = false;
+        selectAll.checked = false;
+      }
+    }
+
+    // Get total questions count
+    function getTotalQuestions() {
+      return questionsData.kitchen.length + questionsData.bathroom.length;
+    }
+
+    // Setup event listeners
+    function setupEventListeners() {
+      // Load from JSON button
+      document.getElementById('loadFromJsonBtn').addEventListener('click', loadQuestionsFromJson);
+      
+      // Save to JSON button
+      document.getElementById('saveToJsonBtn').addEventListener('click', saveQuestionsToJson);
+      
+      // Add question button
+      document.getElementById('addQuestionBtn').addEventListener('click', openAddQuestionModal);
+      
+      // Filter buttons
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          
+          // Update active filter class
+          if (this.classList.contains('active')) {
+            this.classList.add('bg-blue-100', 'text-blue-800');
+            this.classList.remove('bg-gray-100', 'text-gray-700');
+          }
+          
+          currentFilter = this.dataset.filter;
+          currentPage = 1;
+          renderTable();
+          updateSelectedCount();
+        });
+      });
+      
+      // Initialize filter button styles
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        if (btn.classList.contains('active')) {
+          btn.classList.add('bg-blue-100', 'text-blue-800');
+        } else {
+          btn.classList.add('bg-gray-100', 'text-gray-700');
+        }
+      });
+      
+      // Search input
+      document.getElementById('searchInput').addEventListener('input', function(e) {
+        searchQuery = e.target.value;
+        currentPage = 1;
+        renderTable();
+        updateSelectedCount();
+      });
+      
+      // Bulk actions
+      document.getElementById('bulkActions').addEventListener('change', function(e) {
+        if (e.target.value === 'export') {
+          exportSelectedQuestions();
+        } else if (e.target.value === 'duplicate') {
+          duplicateSelectedQuestions();
+        } else if (e.target.value === 'delete') {
+          deleteSelectedQuestions();
+        }
+        
+        // Reset dropdown
+        e.target.value = '';
+      });
+      
+      // Select all checkbox
+      document.getElementById('selectAll').addEventListener('change', function(e) {
+        const isChecked = e.target.checked;
+        const visibleCheckboxes = document.querySelectorAll('.row-checkbox:not([style*="display: none"])');
+        
+        visibleCheckboxes.forEach(checkbox => {
+          checkbox.checked = isChecked;
+          const questionId = checkbox.dataset.id;
+          
+          if (isChecked) {
+            selectedQuestions.add(questionId);
+          } else {
+            selectedQuestions.delete(questionId);
+          }
+        });
+        
+        updateSelectedCount();
+      });
+      
+      // Pagination buttons
+      document.getElementById('prevPageBtn').addEventListener('click', () => {
+        if (currentPage > 1) {
+          currentPage--;
+          renderTable();
+        }
+      });
+      
+      document.getElementById('nextPageBtn').addEventListener('click', () => {
+        const filteredQuestions = getFilteredQuestions();
+        const totalPages = Math.ceil(filteredQuestions.length / rowsPerPage);
+        
+        if (currentPage < totalPages) {
+          currentPage++;
+          renderTable();
+        }
+      });
+      
+      // Modal buttons
+      document.getElementById('closeModalBtn').addEventListener('click', closeEditModal);
+      document.getElementById('cancelEditBtn').addEventListener('click', closeEditModal);
+      document.getElementById('closePreviewBtn').addEventListener('click', closePreviewModal);
+      document.getElementById('closePreviewBtn2').addEventListener('click', closePreviewModal);
+      document.getElementById('cancelDeleteBtn').addEventListener('click', closeDeleteModal);
+      document.getElementById('confirmDeleteBtn').addEventListener('click', confirmDeleteQuestion);
+      document.getElementById('closeToastBtn').addEventListener('click', closeToast);
+      
+      // Question form
+      document.getElementById('questionForm').addEventListener('submit', saveQuestion);
+      
+      // Add option button in modal
+      document.getElementById('addOptionBtnModal').addEventListener('click', addOptionToModal);
+      
+      // Preview button in modal
+      document.getElementById('previewBtn').addEventListener('click', previewQuestionFromModal);
+      
+      // Character count for question text
+      document.getElementById('editQuestionText').addEventListener('input', function(e) {
+        document.getElementById('charCount').textContent = e.target.value.length;
+      });
+      
+      // Question type change
+      document.getElementById('editType').addEventListener('change', function(e) {
+        // If changing from radio to checkbox or vice versa, we might want to adjust options
+        console.log('Question type changed to:', e.target.value);
+      });
+      
+      // Before unload warning
+      window.addEventListener('beforeunload', function(e) {
+        if (hasUnsavedChanges) {
+          e.preventDefault();
+          e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
+        }
+      });
+    }
+
+    // Add event listeners to table rows
+    function addRowEventListeners() {
+      // Row checkboxes
+      document.querySelectorAll('.row-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function(e) {
+          const questionId = this.dataset.id;
+          
+          if (this.checked) {
+            selectedQuestions.add(questionId);
+          } else {
+            selectedQuestions.delete(questionId);
+          }
+          
+          updateSelectedCount();
+        });
+      });
+      
+      // Edit buttons
+      document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const questionId = this.dataset.id;
+          const project = this.dataset.project;
+          openEditQuestionModal(questionId, project);
+        });
+      });
+      
+      // View buttons
+      document.querySelectorAll('.view-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const questionId = this.dataset.id;
+          const project = this.dataset.project;
+          previewQuestionById(questionId, project);
+        });
+      });
+      
+      // Duplicate buttons
+      document.querySelectorAll('.duplicate-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const questionId = this.dataset.id;
+          const project = this.dataset.project;
+          duplicateQuestion(questionId, project);
+        });
+      });
+      
+      // Delete buttons
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const questionId = this.dataset.id;
+          const project = this.dataset.project;
+          openDeleteModal(questionId, project);
+        });
+      });
+      
+      // Row click (for selection)
+      document.querySelectorAll('tbody tr').forEach(row => {
+        row.addEventListener('click', function(e) {
+          // Don't trigger if clicking on a button or checkbox
+          if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT' || 
+              e.target.closest('button') || e.target.closest('input')) {
+            return;
+          }
+          
+          const questionId = this.dataset.id;
+          const checkbox = this.querySelector('.row-checkbox');
+          
+          if (checkbox) {
+            checkbox.checked = !checkbox.checked;
+            checkbox.dispatchEvent(new Event('change'));
+          }
+        });
+      });
+    }
+
+    // Open modal to add a new question
+    function openAddQuestionModal() {
+      // Clear form
+      document.getElementById('editId').value = `question_${Date.now()}`;
+      document.getElementById('editProject').value = 'kitchen';
+      document.getElementById('editQuestionText').value = '';
+      document.getElementById('editType').value = 'radio';
+      document.getElementById('editRequired').checked = true;
+      document.getElementById('charCount').textContent = 0;
+      
+      // Clear options
+      document.getElementById('optionsContainer').innerHTML = `
+        <div class="text-center py-8 text-gray-500 border-2 border-dashed border-gray-300 rounded-lg">
+          <i class="fas fa-plus-circle text-3xl mb-3"></i>
+          <p class="font-medium">No options added yet</p>
+          <p class="text-sm mt-1">Click "Add Option" to start adding answer choices</p>
+        </div>
+      `;
+      nextOptionId = 1;
+      
+      // Update modal title
+      document.querySelector('#editQuestionModal h3').textContent = 'Add New Question';
+      document.getElementById('modalSubtitle').textContent = 'Create a new questionnaire question';
+      
+      // Set editing question to null (new question)
+      editingQuestion = null;
+      
+      // Open modal
+      document.getElementById('editQuestionModal').classList.add('active');
+    }
+
+    // Open modal to edit an existing question
+    function openEditQuestionModal(questionId, project) {
+      // Find the question
+      const questions = questionsData[project];
+      const questionIndex = questions.findIndex(q => q.id === questionId);
+      
+      if (questionIndex === -1) {
+        showToast('Error', 'Question not found', 'error');
+        return;
+      }
+      
+      const question = questions[questionIndex];
+      
+      // Fill form with question data
+      document.getElementById('editId').value = question.id;
+      document.getElementById('editProject').value = project;
+      document.getElementById('editQuestionText').value = question.question;
+      document.getElementById('editType').value = question.type;
+      document.getElementById('editRequired').checked = question.required || false;
+      document.getElementById('charCount').textContent = question.question.length;
+      
+      // Load options
+      loadOptionsToModal(question.options || []);
+      
+      // Update modal title
+      document.querySelector('#editQuestionModal h3').textContent = 'Edit Question';
+      document.getElementById('modalSubtitle').textContent = `ID: ${question.id}`;
+      
+      // Store editing question info
+      editingQuestion = {
+        id: questionId,
+        project: project,
+        index: questionIndex
+      };
+      
+      // Open modal
+      document.getElementById('editQuestionModal').classList.add('active');
+    }
+
+    // Load options into modal
+    function loadOptionsToModal(options) {
+      const container = document.getElementById('optionsContainer');
+      container.innerHTML = '';
+      nextOptionId = 1;
+      
+      if (!options || options.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-8 text-gray-500 border-2 border-dashed border-gray-300 rounded-lg">
+            <i class="fas fa-plus-circle text-3xl mb-3"></i>
+            <p class="font-medium">No options added yet</p>
+            <p class="text-sm mt-1">Click "Add Option" to start adding answer choices</p>
+          </div>
+        `;
+        return;
+      }
+      
+      options.forEach((option, index) => {
+        addOptionToModal(option, index);
+      });
+    }
+
+    // Add an option to the modal
+    function addOptionToModal(optionData = null, index = null) {
+      const container = document.getElementById('optionsContainer');
+      
+      // Remove placeholder if present
+      if (container.children.length === 1 && container.children[0].classList.contains('text-center')) {
+        container.innerHTML = '';
+      }
+      
+      const optionId = `option_${nextOptionId++}`;
+      const isNew = !optionData;
+      
+      const option = isNew ? {
+        value: `option_${nextOptionId}`,
+        label: '',
+        category: 'basic'
+      } : optionData;
+      
+      const optionElement = document.createElement('div');
+      optionElement.className = 'option-item p-4 border border-gray-300 rounded-lg bg-gray-50';
+      optionElement.dataset.index = index !== null ? index : container.children.length;
+      optionElement.innerHTML = `
+        <div class="flex items-start gap-4">
+          <button type="button" class="remove-option-btn p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition self-start mt-2">
+            <i class="fas fa-times"></i>
+          </button>
+          <div class="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Value *</label>
+              <input type="text" class="option-value w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+                     value="${option.value}" placeholder="e.g., basic" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <select class="option-category w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <option value="basic" ${option.category === 'basic' ? 'selected' : ''}>Basic</option>
+                <option value="mid-range" ${option.category === 'mid-range' ? 'selected' : ''}>Mid-Range</option>
+                <option value="high-end" ${option.category === 'high-end' ? 'selected' : ''}>High-End</option>
+              </select>
+            </div>
+            <div class="md:col-span-2 lg:col-span-1">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Label *</label>
+              <input type="text" class="option-label w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+                     value="${option.label}" placeholder="Option text..." required>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      container.appendChild(optionElement);
+      
+      // Add event listeners for the new option
+      const removeBtn = optionElement.querySelector('.remove-option-btn');
+      removeBtn.addEventListener('click', () => {
+        optionElement.remove();
+      });
+    }
+
+    // Close edit modal
+    function closeEditModal() {
+      document.getElementById('editQuestionModal').classList.remove('active');
+    }
+
+    // Save question from modal
+    function saveQuestion(e) {
+      e.preventDefault();
+      
+      // Get form data
+      const project = document.getElementById('editProject').value;
+      const questionId = document.getElementById('editId').value.trim();
+      const questionText = document.getElementById('editQuestionText').value.trim();
+      const type = document.getElementById('editType').value;
+      const required = document.getElementById('editRequired').checked;
+      
+      // Get options
+      const options = [];
+      const optionElements = document.querySelectorAll('.option-item');
+      
+      optionElements.forEach(element => {
+        const value = element.querySelector('.option-value').value.trim();
+        const label = element.querySelector('.option-label').value.trim();
+        const category = element.querySelector('.option-category').value;
+        
+        if (value && label) {
+          options.push({ value, label, category });
+        }
+      });
+      
+      // Validation
+      if (!project || !questionId || !questionText || !type) {
+        showToast('Error', 'Please fill all required fields', 'error');
+        return;
+      }
+      
+      if (options.length === 0) {
+        showToast('Error', 'Please add at least one option', 'error');
+        return;
+      }
+      
+      // Create question object
+      const question = {
+        id: questionId,
+        question: questionText,
+        type: type,
+        required: required,
+        options: options
+      };
+      
+      // Save to data structure
+      if (editingQuestion) {
+        // Update existing question
+        questionsData[project][editingQuestion.index] = question;
+        
+        // If project changed, remove from old project
+        if (project !== editingQuestion.project) {
+          const oldQuestions = questionsData[editingQuestion.project];
+          const oldIndex = oldQuestions.findIndex(q => q.id === editingQuestion.id);
+          if (oldIndex !== -1) {
+            oldQuestions.splice(oldIndex, 1);
+          }
+          
+          // Add to new project
+          questionsData[project].push(question);
+        }
+      } else {
+        // Add new question
+        if (!questionsData[project]) {
+          questionsData[project] = [];
+        }
+        questionsData[project].push(question);
+      }
+      
+      // Update UI
+      renderTable();
+      updateStats();
+      hasUnsavedChanges = true;
+      updateJsonStatus('Unsaved changes');
+      
+      // Close modal
+      closeEditModal();
+      
+      // Show success message
+      showToast('Success', `Question "${questionText.substring(0, 30)}..." saved`, 'success');
+    }
+
+    // Preview question from modal
+    function previewQuestionFromModal() {
+      // Get current form data
+      const project = document.getElementById('editProject').value;
+      const questionText = document.getElementById('editQuestionText').value.trim();
+      const type = document.getElementById('editType').value;
+      const required = document.getElementById('editRequired').checked;
+      
+      // Get options
+      const options = [];
+      const optionElements = document.querySelectorAll('.option-item');
+      
+      optionElements.forEach(element => {
+        const value = element.querySelector('.option-value').value.trim();
+        const label = element.querySelector('.option-label').value.trim();
+        const category = element.querySelector('.option-category').value;
+        
+        if (value && label) {
+          options.push({ value, label, category });
+        }
+      });
+      
+      // Show preview
+      showPreview(questionText, type, required, options, project);
+    }
+
+    // Preview question by ID
+    function previewQuestionById(questionId, project) {
+      const questions = questionsData[project];
+      const question = questions.find(q => q.id === questionId);
+      
+      if (!question) {
+        showToast('Error', 'Question not found', 'error');
+        return;
+      }
+      
+      showPreview(question.question, question.type, question.required, question.options || [], project);
+    }
+
+    // Show preview modal
+    function showPreview(questionText, type, required, options, project) {
+      // Build preview HTML
+      let previewHTML = `
+        <div class="bg-white rounded-lg border border-gray-200 p-6">
+          <div class="mb-6">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="text-xl font-bold text-gray-900">Preview</h4>
+              <span class="badge ${project === 'kitchen' ? 'badge-kitchen' : 'badge-bathroom'}">${project}</span>
+            </div>
+            <p class="text-gray-700 mb-4">${questionText || 'Question preview'}</p>
+            <div class="flex gap-2">
+              <span class="badge ${type === 'radio' ? 'badge-radio' : 'badge-checkbox'}">
+                ${type === 'radio' ? 'Single Choice' : 'Multiple Choice'}
+              </span>
+              <span class="badge ${required ? 'badge-required' : 'badge-optional'}">
+                ${required ? 'Required' : 'Optional'}
+              </span>
+              <span class="badge bg-gray-100 text-gray-800">
+                ${options.length} options
+              </span>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <h5 class="font-medium text-gray-900">Answer Options:</h5>
+      `;
+      
+      if (type === 'radio') {
+        options.forEach((option, index) => {
+          previewHTML += `
+            <div class="flex items-start p-4 border border-gray-200 rounded-lg">
+              <input type="radio" id="preview_${index}" name="preview_question" class="mt-1 mr-3" ${index === 0 ? 'checked' : ''}>
+              <label for="preview_${index}" class="flex-1">
+                <span class="block text-gray-900">${option.label}</span>
+                <span class="text-xs text-gray-500 mt-1">Value: ${option.value} | Category: ${option.category}</span>
+              </label>
+            </div>
+          `;
+        });
+      } else if (type === 'checkbox') {
+        options.forEach((option, index) => {
+          previewHTML += `
+            <div class="flex items-start p-4 border border-gray-200 rounded-lg">
+              <input type="checkbox" id="preview_cb_${index}" class="mt-1 mr-3">
+              <label for="preview_cb_${index}" class="flex-1">
+                <span class="block text-gray-900">${option.label}</span>
+                <span class="text-xs text-gray-500 mt-1">Value: ${option.value} | Category: ${option.category}</span>
+              </label>
+            </div>
+          `;
+        });
+      }
+      
+      previewHTML += `
+          </div>
+          
+          <div class="mt-6 pt-6 border-t border-gray-200">
+            <p class="text-sm text-gray-600"><strong>Note:</strong> This is a preview of how the question will appear to users.</p>
+          </div>
+        </div>
+      `;
+      
+      // Show preview
+      document.getElementById('previewContent').innerHTML = previewHTML;
+      document.getElementById('previewModal').classList.add('active');
+    }
+
+    // Close preview modal
+    function closePreviewModal() {
+      document.getElementById('previewModal').classList.remove('active');
+    }
+
+    // Open delete confirmation modal
+    function openDeleteModal(questionId, project) {
+      const questions = questionsData[project];
+      const question = questions.find(q => q.id === questionId);
+      
+      if (!question) {
+        showToast('Error', 'Question not found', 'error');
+        return;
+      }
+      
+      // Set question info in modal
+      document.getElementById('deleteQuestionText').textContent = `"${question.question.substring(0, 50)}..."`;
+      document.getElementById('deleteQuestionId').textContent = `ID: ${questionId}`;
+      
+      // Store question to delete
+      document.getElementById('deleteModal').dataset.questionId = questionId;
+      document.getElementById('deleteModal').dataset.project = project;
+      
+      // Open modal
+      document.getElementById('deleteModal').classList.add('active');
+    }
+
+    // Close delete modal
+    function closeDeleteModal() {
+      document.getElementById('deleteModal').classList.remove('active');
+    }
+
+    // Confirm and delete question
+    function confirmDeleteQuestion() {
+      const questionId = document.getElementById('deleteModal').dataset.questionId;
+      const project = document.getElementById('deleteModal').dataset.project;
+      
+      // Find and remove question
+      const questions = questionsData[project];
+      const questionIndex = questions.findIndex(q => q.id === questionId);
+      
+      if (questionIndex !== -1) {
+        questions.splice(questionIndex, 1);
+        
+        // Remove from selected if present
+        selectedQuestions.delete(questionId);
+        
+        // Update UI
+        renderTable();
+        updateStats();
+        updateSelectedCount();
+        hasUnsavedChanges = true;
+        updateJsonStatus('Unsaved changes');
+        
+        // Show success message
+        showToast('Success', 'Question deleted successfully', 'success');
+      }
+      
+      // Close modal
+      closeDeleteModal();
+    }
+
+    // Duplicate a question
+    function duplicateQuestion(questionId, project) {
+      const questions = questionsData[project];
+      const question = questions.find(q => q.id === questionId);
+      
+      if (!question) {
+        showToast('Error', 'Question not found', 'error');
+        return;
+      }
+      
+      // Create duplicate with new ID
+      const duplicate = JSON.parse(JSON.stringify(question));
+      duplicate.id = `${questionId}_copy_${Date.now()}`;
+      
+      // Add to questions array
+      questions.push(duplicate);
+      
+      // Update UI
+      renderTable();
+      updateStats();
+      hasUnsavedChanges = true;
+      updateJsonStatus('Unsaved changes');
+      
+      showToast('Success', 'Question duplicated successfully', 'success');
+    }
+
+    // Duplicate selected questions
+    function duplicateSelectedQuestions() {
+      if (selectedQuestions.size === 0) {
+        showToast('Info', 'No questions selected', 'info');
+        return;
+      }
+      
+      // Find and duplicate each selected question
+      selectedQuestions.forEach(questionId => {
+        // Find which project contains this question
+        let found = false;
+        
+        for (const project of ['kitchen', 'bathroom']) {
+          const questions = questionsData[project];
+          const question = questions.find(q => q.id === questionId);
+          
+          if (question) {
+            // Create duplicate
+            const duplicate = JSON.parse(JSON.stringify(question));
+            duplicate.id = `${questionId}_copy_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+            
+            // Add to same project
+            questions.push(duplicate);
+            found = true;
+            break;
+          }
+        }
+      });
+      
+      // Clear selection
+      selectedQuestions.clear();
+      
+      // Update UI
+      renderTable();
+      updateStats();
+      updateSelectedCount();
+      hasUnsavedChanges = true;
+      updateJsonStatus('Unsaved changes');
+      
+      showToast('Success', `Duplicated ${selectedQuestions.size} questions`, 'success');
+    }
+
+    // Delete selected questions
+    function deleteSelectedQuestions() {
+      if (selectedQuestions.size === 0) {
+        showToast('Info', 'No questions selected', 'info');
+        return;
+      }
+      
+      if (!confirm(`Are you sure you want to delete ${selectedQuestions.size} selected questions? This action cannot be undone.`)) {
+        return;
+      }
+      
+      // Delete from each project
+      let deletedCount = 0;
+      
+      for (const project of ['kitchen', 'bathroom']) {
+        const questions = questionsData[project];
+        const newQuestions = questions.filter(q => !selectedQuestions.has(q.id));
+        deletedCount += (questions.length - newQuestions.length);
+        questionsData[project] = newQuestions;
+      }
+      
+      // Clear selection
+      selectedQuestions.clear();
+      
+      // Update UI
+      renderTable();
+      updateStats();
+      updateSelectedCount();
+      hasUnsavedChanges = true;
+      updateJsonStatus('Unsaved changes');
+      
+      showToast('Success', `Deleted ${deletedCount} questions`, 'success');
+    }
+
+    // Export selected questions
+    function exportSelectedQuestions() {
+      if (selectedQuestions.size === 0) {
+        showToast('Info', 'No questions selected', 'info');
+        return;
+      }
+      
+      // Collect selected questions
+      const selectedData = {
+        kitchen: [],
+        bathroom: []
+      };
+      
+      for (const project of ['kitchen', 'bathroom']) {
+        const questions = questionsData[project];
+        const selected = questions.filter(q => selectedQuestions.has(q.id));
+        selectedData[project] = selected;
+      }
+      
+      // Create JSON file
+      const jsonData = JSON.stringify(selectedData, null, 2);
+      const blob = new Blob([jsonData], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `selected_questions_${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      showToast('Success', `Exported ${selectedQuestions.size} questions`, 'success');
+    }
+
+    // Update UI based on current state
+    function updateUI() {
+      updateSelectedCount();
+      
+      // Update save button state
+      const saveBtn = document.getElementById('saveToJsonBtn');
+      if (hasUnsavedChanges) {
+        saveBtn.innerHTML = '<i class="fas fa-exclamation-circle mr-2"></i>Save Changes*';
+        saveBtn.classList.add('bg-yellow-600', 'hover:bg-yellow-700');
+        saveBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
+      } else {
+        saveBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Save to JSON';
+        saveBtn.classList.remove('bg-yellow-600', 'hover:bg-yellow-700');
+        saveBtn.classList.add('bg-green-600', 'hover:bg-green-700');
+      }
+    }
+
+    // Show toast notification
+    function showToast(title, message, type = 'info') {
+      const toast = document.getElementById('toast');
+      const toastIcon = document.getElementById('toastIcon');
+      const toastTitle = document.getElementById('toastTitle');
+      const toastMessage = document.getElementById('toastMessage');
+      
+      // Set icon and colors based on type
+      let iconClass;
+      switch(type) {
+        case 'success':
+          iconClass = 'fas fa-check-circle text-green-500 text-xl';
+          break;
+        case 'error':
+          iconClass = 'fas fa-exclamation-circle text-red-500 text-xl';
+          break;
+        case 'warning':
+          iconClass = 'fas fa-exclamation-triangle text-yellow-500 text-xl';
+          break;
+        default:
+          iconClass = 'fas fa-info-circle text-blue-500 text-xl';
+      }
+      
+      // Update toast content
+      toastIcon.className = iconClass;
+      toastTitle.textContent = title;
+      toastMessage.textContent = message;
+      
+      // Show toast
+      toast.classList.remove('hidden');
+      
+      // Auto-hide after 5 seconds
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 5000);
+      
+      // Update UI
+      updateUI();
+    }
+
+    // Close toast
+    function closeToast() {
+      document.getElementById('toast').classList.add('hidden');
+    }
+  </script>
+</body>
+</html>

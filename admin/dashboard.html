@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Heroicons CDN (outline) -->
+  <script src="https://unpkg.com/heroicons@2.0.18/dist/heroicons.min.js"></script>
+  <!-- ApexCharts CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <style>
+    body, html { height: 100%; }
+    /* Responsive sidebar collapse */
+    @media (max-width: 1023px) {
+      .sidebar {
+        position: fixed;
+        left: -260px;
+        top: 4rem;
+        width: 16rem;
+        height: calc(100vh - 4rem);
+        z-index: 50;
+        background: #1e3a5f;
+        border-right: 1px solid #1e3a5f;
+        transition: left 0.25s;
+      }
+      .sidebar.open {
+        left: 0;
+      }
+      .main-content {
+        margin-left: 0 !important;
+        padding-top: 5.5rem;
+      }
+      .sidebar-backdrop {
+        display: block;
+      }
+    }
+    @media (min-width: 1024px) {
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 4rem;
+        bottom: 0;
+        width: 16rem;
+        z-index: 20;
+        background: #1e3a5f;
+        border-right: 1px solid #1e3a5f;
+      }
+      .sidebar-backdrop {
+        display: none;
+      }
+    }
+    .sidebar-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(31, 41, 55, 0.25);
+      z-index: 40;
+      display: none;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans">
+  <!-- NAVBAR TOP -->
+  <nav class="fixed top-0 left-0 w-full h-16 bg-white border-b border-gray-200 z-30 flex items-center justify-between px-6 shadow-sm">
+    <div class="flex items-center gap-3">
+      <!-- Mobile menu button -->
+      <button id="sidebarToggle" class="lg:hidden p-2 inline-flex items-center rounded hover:bg-gray-100 transition">
+        <!-- Heroicon: Bars3 -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+      </button>
+      <!-- Logo/Brand -->
+      <span class="inline-flex items-center gap-2 text-xl font-bold tracking-tight text-primary">
+        <img src="../public/logo.png" alt="HAC Logo" class="w-10 h-10 object-contain">
+        <span class="hidden sm:inline">H.A.C. Renovation Inc</span>
+      </span>
+    </div>
+    <div class="flex items-center gap-4">
+      <!-- User avatar + Logout -->
+      <button class="relative flex items-center gap-2 p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition">
+        <!-- Person Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14c3.314 0 6 1.343 6 3v1H6v-1c0-1.657 2.686-3 6-3zm0-7a3 3 0 110 6 3 3 0 010-6z" /></svg>
+        <span class="hidden md:inline font-medium text-primary">Admin</span>
+      </button>
+      <button class="ml-2 px-3 py-2 rounded-lg border border-primary text-primary font-semibold bg-white shadow-sm hover:bg-primary hover:text-white transition">Logout</button>
+    </div>
+  </nav>
+  <!-- SIDEBAR BACKDROP (Mobile Only) -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+  <!-- LAYOUT -->
+  <div class="min-h-screen flex pt-16 bg-gray-50">
+    <!-- SIDEBAR -->
+    <aside class="sidebar open lg:static lg:open" id="mainSidebar">
+      <nav class="flex flex-col h-full py-6">
+        <div class="mb-6 px-4">
+          <span class="text-sm font-semibold tracking-wider text-white/70 uppercase hidden lg:block">Menu</span>
+        </div>
+        <div class="flex-1 space-y-0.5 px-3">
+          <a href="dashboard.html" class="flex items-center px-3 py-2.5 rounded-lg bg-white/20 text-white gap-2.5 font-medium text-sm hover:bg-white/30 transition">
+            <!-- Dashboard Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 13h4v8H4zm6 0h4v4h-4zm6 0h4v6h-4zm0-8v4m0 4V5"/></svg>
+            Dashboard
+          </a>
+          <a href="clients.html" class="flex items-center px-3 py-2.5 rounded-lg text-white/80 gap-2.5 font-medium text-sm hover:bg-white/20 transition">
+            <!-- Users/Clients Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-1a4 4 0 00-4-4H6a4 4 0 00-4 4v1h5M8 4a4 4 0 014-4 4 4 0 014 4v1H8V4zm6 4v1M7 8v1m0 4v1"/></svg>
+            Clients
+          </a>
+          <a href="#" class="flex items-center px-3 py-2.5 rounded-lg text-white/80 gap-2.5 font-medium text-sm hover:bg-white/20 transition">
+            <!-- Reports Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-4M15 17V7M12 17v-1m9 4H3a1 1 0 01-1-1V5a1 1 0 011-1h18a1 1 0 011 1v14a1 1 0 01-1 1z"/></svg>
+            Reports
+          </a>
+          <a href="#" class="flex items-center px-3 py-2.5 rounded-lg text-white/80 gap-2.5 font-medium text-sm hover:bg-white/20 transition">
+            <!-- Settings Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.775 3.275A9.943 9.943 0 0012 3c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 18.523 2 13a9.943 9.943 0 00.225-1.725m9.55-6.95A9.978 9.978 0 0112 3zm0 0A10.013 10.013 0 012 13c0 5.523 4.477 10 10 10s10-4.477 10-10c0-5.523-4.477-10-10-10z"/></svg>
+            Settings
+          </a>
+        </div>
+      </nav>
+    </aside>
+    <!-- MAIN CONTENT -->
+    <main class="main-content flex-1 flex flex-col gap-8 px-6 py-6">
+
+      <!-- Services Chart -->
+      <section class="bg-white rounded-xl shadow-md px-6 py-5 w-full">
+        <h2 class="text-lg font-semibold mb-4 text-gray-800">Services Overview</h2>
+        <div id="servicesChart" style="height: 300px;"></div>
+      </section>
+      <!-- Clients by Month Chart -->
+      <section class="bg-white rounded-xl shadow-md px-6 py-5 w-full">
+        <h2 class="text-lg font-semibold mb-4 text-gray-800">Clients by Month</h2>
+        <div id="clientsChart" style="height: 300px;"></div>
+      </section>
+    </main>
+  </div>
+  <script>
+    // RESPONSIVE SIDEBAR
+    const sidebar = document.getElementById('mainSidebar');
+    const sidebarBtn = document.getElementById('sidebarToggle');
+    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+    if(sidebarBtn) {
+      sidebarBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        sidebarBackdrop.style.display = sidebar.classList.contains("open") ? 'block' : 'none';
+      });
+    }
+    if(sidebarBackdrop){
+      sidebarBackdrop.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        sidebarBackdrop.style.display = 'none';
+      });
+    }
+    // Services Chart (Bar) - ApexCharts
+    const services = ['Painting', 'Demolition', 'Electricity', 'Plumbing', 'Remodeling'];
+    const counts = Array.from({ length: services.length }, () => Math.floor(Math.random() * 40) + 10);
+    if (document.getElementById('servicesChart')) {
+      const options = {
+        series: [{
+          name: 'Services',
+          data: counts
+        }],
+        chart: {
+          type: 'bar',
+          height: 300,
+          toolbar: { show: false }
+        },
+        plotOptions: {
+          bar: {
+            borderRadius: 6,
+            columnWidth: '60%',
+            distributed: true
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        colors: ['#1e3a5f', '#2c4f7c', '#e67e22', '#f39c12', '#2563eb'],
+        xaxis: {
+          categories: services,
+          labels: {
+            style: {
+              colors: '#6b7280',
+              fontSize: '12px'
+            }
+          },
+          axisBorder: { show: false },
+          axisTicks: { show: false }
+        },
+        yaxis: {
+          labels: {
+            style: {
+              colors: '#6b7280',
+              fontSize: '12px'
+            }
+          },
+          grid: {
+            borderColor: '#f3f4f6'
+          }
+        },
+        grid: {
+          borderColor: '#f3f4f6',
+          strokeDashArray: 0,
+          xaxis: { lines: { show: false } }
+        },
+        tooltip: {
+          theme: 'dark'
+        }
+      };
+      const chart = new ApexCharts(document.querySelector("#servicesChart"), options);
+      chart.render();
+    }
+
+    // Clients by Month Chart (Area) - ApexCharts
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const clientCounts = Array.from({ length: 12 }, () => Math.floor(Math.random() * 30) + 5);
+    if (document.getElementById('clientsChart')) {
+      const options = {
+        series: [{
+          name: 'New Clients',
+          data: clientCounts
+        }],
+        chart: {
+          type: 'area',
+          height: 300,
+          toolbar: { show: false },
+          zoom: { enabled: false }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'smooth',
+          width: 3,
+          colors: ['#1e3a5f']
+        },
+        fill: {
+          type: 'gradient',
+          gradient: {
+            shadeIntensity: 1,
+            opacityFrom: 0.4,
+            opacityTo: 0.1,
+            stops: [0, 90, 100]
+          },
+          colors: ['#1e3a5f']
+        },
+        colors: ['#1e3a5f'],
+        xaxis: {
+          categories: months,
+          labels: {
+            style: {
+              colors: '#6b7280',
+              fontSize: '12px'
+            }
+          },
+          axisBorder: { show: false },
+          axisTicks: { show: false }
+        },
+        yaxis: {
+          labels: {
+            style: {
+              colors: '#6b7280',
+              fontSize: '12px'
+            }
+          },
+          grid: {
+            borderColor: '#f3f4f6'
+          }
+        },
+        grid: {
+          borderColor: '#f3f4f6',
+          strokeDashArray: 0,
+          xaxis: { lines: { show: false } }
+        },
+        tooltip: {
+          theme: 'dark'
+        },
+        markers: {
+          size: 5,
+          colors: ['#1e3a5f'],
+          strokeColors: '#fff',
+          strokeWidth: 2,
+          hover: { size: 7 }
+        }
+      };
+      const chart = new ApexCharts(document.querySelector("#clientsChart"), options);
+      chart.render();
+    }
+  </script>
+</body>
+</html>

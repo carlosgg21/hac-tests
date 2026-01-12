@@ -1,0 +1,440 @@
+{
+  "bathroom": [
+    {
+      "id": "bathroom_goal",
+      "question": "1. ¿Cuál es su objetivo principal para este baño? *",
+      "type": "radio",
+      "required": true,
+      "options": [
+        {
+          "value": "basic",
+          "label": "Renovarlo y modernizarlo, manteniéndolo simple y funcional",
+          "category": "basic"
+        },
+        {
+          "value": "mid-range",
+          "label": "Mejorarlo para mayor comodidad, durabilidad y un aspecto moderno",
+          "category": "mid-range"
+        },
+        {
+          "value": "high-end",
+          "label": "Crear un baño tipo spa con acabados premium",
+          "category": "high-end"
+        }
+      ]
+    },
+    {
+      "id": "bathroom_layout",
+      "question": "2. ¿Planea mantener el diseño existente? *",
+      "type": "radio",
+      "required": true,
+      "options": [
+        {
+          "value": "basic",
+          "label": "Sí, sin cambios en la plomería",
+          "category": "basic"
+        },
+        {
+          "value": "mid-range",
+          "label": "Posiblemente pequeños cambios (lavabo o ubicación de la ducha)",
+          "category": "mid-range"
+        },
+        {
+          "value": "high-end",
+          "label": "No, quiero un rediseño completo",
+          "category": "high-end"
+        }
+      ]
+    },
+    {
+      "id": "bathroom_shower_tub",
+      "question": "3. ¿Qué tipo de ducha o bañera tiene en mente? *",
+      "type": "radio",
+      "required": true,
+      "options": [
+        {
+          "value": "basic",
+          "label": "Bañera existente o base de ducha acrílica",
+          "category": "basic"
+        },
+        {
+          "value": "mid-range",
+          "label": "Ducha con azulejos y cerramiento de vidrio",
+          "category": "mid-range"
+        },
+        {
+          "value": "high-end",
+          "label": "Ducha walk-in personalizada y/o bañera independiente",
+          "category": "high-end"
+        }
+      ]
+    },
+    {
+      "id": "bathroom_finishes",
+      "question": "4. ¿Qué nivel de acabados prefiere? *",
+      "type": "radio",
+      "required": true,
+      "options": [
+        {
+          "value": "basic",
+          "label": "Simple, duradero y económico",
+          "category": "basic"
+        },
+        {
+          "value": "mid-range",
+          "label": "Moderno y elegante con materiales mejorados",
+          "category": "mid-range"
+        },
+        {
+          "value": "high-end",
+          "label": "Alto nivel, lujoso y centrado en el diseño",
+          "category": "high-end"
+        }
+      ]
+    },
+    {
+      "id": "bathroom_vanity",
+      "question": "5. ¿Qué tipo de mueble de baño le interesa? *",
+      "type": "radio",
+      "required": true,
+      "options": [
+        {
+          "value": "basic",
+          "label": "Mueble estándar con encimera de laminado",
+          "category": "basic"
+        },
+        {
+          "value": "mid-range",
+          "label": "Mueble semi-personalizado con encimera de cuarzo",
+          "category": "mid-range"
+        },
+        {
+          "value": "high-end",
+          "label": "Mueble personalizado con piedra o acabados de diseñador",
+          "category": "high-end"
+        }
+      ]
+    },
+    {
+      "id": "bathroom_upgrades",
+      "question": "6. ¿Son importantes para usted mejoras como estas? (Seleccione todas las que apliquen)",
+      "type": "checkbox",
+      "required": false,
+      "options": [
+        {
+          "value": "heated_floors",
+          "label": "Suelos radiante",
+          "category": "mid-range"
+        },
+        {
+          "value": "shower_niches",
+          "label": "Nicho de ducha o almacenamiento empotrado",
+          "category": "mid-range"
+        },
+        {
+          "value": "rain_shower",
+          "label": "Ducha de lluvia o accesorios mejorados",
+          "category": "high-end"
+        },
+        {
+          "value": "smart_features",
+          "label": "Espejos inteligentes / iluminación / ducha de vapor",
+          "category": "high-end"
+        }
+      ]
+    },
+    {
+      "id": "bathroom_durability",
+      "question": "7. ¿Qué tan importante es la durabilidad a largo plazo y la impermeabilización? *",
+      "type": "radio",
+      "required": true,
+      "options": [
+        {
+          "value": "basic",
+          "label": "La instalación estándar está bien",
+          "category": "basic"
+        },
+        {
+          "value": "mid-range",
+          "label": "Quiero sistemas de impermeabilización adecuados",
+          "category": "mid-range"
+        },
+        {
+          "value": "high-end",
+          "label": "Quiero sistemas y materiales de primera calidad",
+          "category": "high-end"
+        }
+      ]
+    },
+    {
+      "id": "bathroom_budget",
+      "question": "8. ¿Qué rango de presupuesto se alinea mejor con sus expectativas? *",
+      "type": "radio",
+      "required": true,
+      "options": [
+        {
+          "value": "basic",
+          "label": "$10,000 – $18,000",
+          "category": "basic"
+        },
+        {
+          "value": "mid-range",
+          "label": "$18,000 – $30,000",
+          "category": "mid-range"
+        },
+        {
+          "value": "high-end",
+          "label": "$30,000 – $60,000+",
+          "category": "high-end"
+        }
+      ]
+    }
+  ],
+  "kitchen": [
+    {
+      "id": "kitchen_goal",
+      "question": "1. ¿Cuál es su objetivo principal para esta cocina? *",
+      "type": "radio",
+      "required": true,
+      "options": [
+        {
+          "value": "basic",
+          "label": "Renovar el aspecto manteniendo la funcionalidad de la cocina",
+          "category": "basic"
+        },
+        {
+          "value": "mid-range",
+          "label": "Mejorar para un mejor flujo, almacenamiento y un estilo moderno",
+          "category": "mid-range"
+        },
+        {
+          "value": "high-end",
+          "label": "Crear una experiencia de cocina personalizada y orientada al diseño",
+          "category": "high-end"
+        }
+      ]
+    },
+    {
+      "id": "kitchen_layout",
+      "question": "2. ¿Planea mantener el diseño existente de la cocina? *",
+      "type": "radio",
+      "required": true,
+      "options": [
+        {
+          "value": "basic",
+          "label": "Sí, sin cambios en la plomería o electricidad",
+          "category": "basic"
+        },
+        {
+          "value": "mid-range",
+          "label": "Ajustes menores (relocalización de electrodomésticos, adición de isla)",
+          "category": "mid-range"
+        },
+        {
+          "value": "high-end",
+          "label": "No, quiero un rediseño completo del diseño",
+          "category": "high-end"
+        }
+      ]
+    },
+    {
+      "id": "kitchen_cabinetry",
+      "question": "3. ¿Qué tipo de gabinetes le interesan? *",
+      "type": "radio",
+      "required": true,
+      "options": [
+        {
+          "value": "basic",
+          "label": "Gabinetes estándar o renovación de gabinetes existentes",
+          "category": "basic"
+        },
+        {
+          "value": "mid-range",
+          "label": "Gabinetes semi-personalizados con opciones de almacenamiento mejoradas",
+          "category": "mid-range"
+        },
+        {
+          "value": "high-end",
+          "label": "Gabinetes totalmente personalizados construidos para adaptarse al espacio",
+          "category": "high-end"
+        }
+      ]
+    },
+    {
+      "id": "kitchen_finishes",
+      "question": "4. ¿Qué nivel de acabados prefiere? *",
+      "type": "radio",
+      "required": true,
+      "options": [
+        {
+          "value": "basic",
+          "label": "Simple, duradero y económico",
+          "category": "basic"
+        },
+        {
+          "value": "mid-range",
+          "label": "Acabados modernos con materiales mejorados",
+          "category": "mid-range"
+        },
+        {
+          "value": "high-end",
+          "label": "Acabados de lujo y detalles de diseñador",
+          "category": "high-end"
+        }
+      ]
+    },
+    {
+      "id": "kitchen_countertop",
+      "question": "5. ¿Qué tipo de encimera está considerando? *",
+      "type": "radio",
+      "required": true,
+      "options": [
+        {
+          "value": "basic",
+          "label": "Laminado o materiales básicos",
+          "category": "basic"
+        },
+        {
+          "value": "mid-range",
+          "label": "Cuarzo o piedra mejorada",
+          "category": "mid-range"
+        },
+        {
+          "value": "high-end",
+          "label": "Piedra natural o superficies premium",
+          "category": "high-end"
+        }
+      ]
+    },
+    {
+      "id": "kitchen_upgrades",
+      "question": "6. ¿Planea agregar o mejorar alguno de los siguientes? (Seleccione todas las que apliquen)",
+      "type": "checkbox",
+      "required": false,
+      "options": [
+        {
+          "value": "kitchen_island",
+          "label": "Isla o península de cocina",
+          "category": "mid-range"
+        },
+        {
+          "value": "soft_close",
+          "label": "Cajones con cierre suave y organizadores",
+          "category": "mid-range"
+        },
+        {
+          "value": "under_cabinet_lighting",
+          "label": "Iluminación bajo gabinetes",
+          "category": "mid-range"
+        },
+        {
+          "value": "built_in_pantry",
+          "label": "Despensa empotrada o almacenamiento personalizado",
+          "category": "high-end"
+        }
+      ]
+    },
+    {
+      "id": "kitchen_appliances",
+      "question": "7. ¿Qué nivel de electrodomésticos está buscando? *",
+      "type": "radio",
+      "required": true,
+      "options": [
+        {
+          "value": "basic",
+          "label": "Electrodomésticos existentes o reemplazos estándar",
+          "category": "basic"
+        },
+        {
+          "value": "mid-range",
+          "label": "Electrodomésticos nuevos con mejor eficiencia y características",
+          "category": "mid-range"
+        },
+        {
+          "value": "high-end",
+          "label": "Electrodomésticos integrados de alta gama o con paneles",
+          "category": "high-end"
+        }
+      ]
+    },
+    {
+      "id": "kitchen_durability",
+      "question": "8. ¿Qué tan importante es la durabilidad a largo plazo y la artesanía? *",
+      "type": "radio",
+      "required": true,
+      "options": [
+        {
+          "value": "basic",
+          "label": "La instalación estándar está bien",
+          "category": "basic"
+        },
+        {
+          "value": "mid-range",
+          "label": "Quiero materiales de calidad e instalación sólida",
+          "category": "mid-range"
+        },
+        {
+          "value": "high-end",
+          "label": "Quiero artesanía premium y valor a largo plazo",
+          "category": "high-end"
+        }
+      ]
+    },
+    {
+      "id": "kitchen_budget",
+      "question": "9. ¿Qué rango de presupuesto se alinea mejor con sus expectativas? *",
+      "type": "radio",
+      "required": true,
+      "options": [
+        {
+          "value": "basic",
+          "label": "$15,000 – $25,000",
+          "category": "basic"
+        },
+        {
+          "value": "mid-range",
+          "label": "$25,000 – $45,000",
+          "category": "mid-range"
+        },
+        {
+          "value": "high-end",
+          "label": "$45,000 – $80,000+",
+          "category": "high-end"
+        }
+      ]
+    }
+  ],
+  "general": {
+    "project_types": [
+      "Renovación de cocina",
+      "Remodelación de baño",
+      "Acabado de sótano",
+      "Construcción de patio",
+      "Pisos",
+      "Otro"
+    ],
+    "property_types": [
+      "Residencial",
+      "Comercial"
+    ],
+    "budget_ranges": [
+      "Menos de $10,000",
+      "$10,000-$25,000",
+      "$25,000-$50,000",
+      "$50,000-$100,000",
+      "Más de $100,000",
+      "No estoy seguro"
+    ],
+    "timelines": [
+      "Lo antes posible",
+      "1-3 meses",
+      "3-6 meses",
+      "Más de 6 meses"
+    ],
+    "contact_methods": [
+      "Teléfono",
+      "Correo electrónico",
+      "Mensaje de texto"
+    ]
+  }
+}
