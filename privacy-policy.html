@@ -214,6 +214,9 @@
                     <p class="text-gray-300 text-sm leading-relaxed" data-translate="footer_tagline">
                         Professional construction and renovation services you can trust.
                     </p>
+                    <p class="text-gray-300 text-sm mt-2">
+                        RBQ: 5843-7187-01
+                    </p>
                 </div>
 
                 <div>
@@ -277,12 +280,17 @@
             </div>
 
             <div class="border-t border-white/20 pt-8 text-center text-gray-300 text-sm">
-                <p>&copy; 2026 H.A.C. Renovation Inc. All rights reserved. | <a href="privacy-policy.html" class="hover:text-accent transition-colors" data-translate="footer_privacy">Privacy Policy</a></p>
+                <p>&copy; 2026 H.A.C. Renovation Inc. All rights reserved. | <a href="privacy-policy.html" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors" data-translate="footer_privacy">Privacy Policy</a></p>
             </div>
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <!-- Load scripts in order: translations first (no dependencies), then UI, wizard, forms, and finally main -->
+    <script src="js/translations.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/wizard.js"></script>
+    <script src="js/forms.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
 
